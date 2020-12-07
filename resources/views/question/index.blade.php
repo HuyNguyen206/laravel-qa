@@ -10,8 +10,12 @@
                     <div class="card-body">
                     @foreach ($questions as $q)
                         <h5>
-                            {{$q->title}}
+                            <a href="{{$q->url}}">{{$q->title}}</a>
                         </h5>
+                        <span>Asked by <b> <a href="{{ $q->user->url }}">{{ $q->user->name  }}</a></b></span>
+                        <small class="text-muted">
+                            {{$q->date_created}}
+                        </small>
                         <p>
                             {{ \Illuminate\Support\Str::limit($q->body, 250) }}
                         </p>
