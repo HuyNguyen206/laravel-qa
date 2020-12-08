@@ -8,7 +8,9 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
                             <h2>Questions</h2>
+                            @can('create', App\Question::class)
                             <a href="{{route('questions.create')}}" class="btn btn-outline-secondary"><i class="fas fa-plus-circle" title="Add Question"></i></a>
+                            @endcan
                         </div>
 
                     </div>
@@ -42,10 +44,10 @@
                                                 <a href="{{$q->url}}">{{$q->title}}</a>
                                             </h5>
                                             <div class="btn-group">
-                                                @can('update-question', $q)
+                                                @can('update', $q)
                                                 <a href="{{route('questions.edit', $q->id)}}" class="btn btn-outline-info btn-sm d-inline-block"> <i title="Edit question" class="far fa-edit"></i> </a>
                                                 @endcan
-                                                @can('delete-question', $q)
+                                                @can('delete', $q)
                                                     <form action="{{route('questions.destroy', $q->id)}}" method="post">
                                                     @csrf
                                                     @method('delete')
