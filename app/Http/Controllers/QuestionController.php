@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionCreateRequest;
+use App\Http\Requests\UpdateQuestionRequest;
 use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,8 @@ class QuestionController extends Controller
     public function show(Question $question)
     {
         //
+       $question->increment('views');
+       return view('question.show', compact('question'));
     }
 
     /**
@@ -72,6 +75,13 @@ class QuestionController extends Controller
     public function edit(Question $question)
     {
         //
+        if(\Gate::denies('update-question', $question))
+        {
+            abort(403, 'Access Denied');
+        }
+
+        return view('question.edit', compact('question'));
+
     }
 
     /**
@@ -81,9 +91,24 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
         //
+        try {
+            //
+            if(\Gate::denies('update-question', $question))
+            {
+                abort(403, 'Access Denied');
+            }
+
+            $question->update($request->only('title', 'body'));
+            return redirect()->route('questions.index')->with('success', 'Your question has been updated');
+        }
+        catch (\Throwable $ex)
+        {
+            return redirect()->route('questions.index')->with('fail', $ex->getMessage());
+        }
+
     }
 
     /**
@@ -95,5 +120,21 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         //
+        try {
+
+            //
+            if(\Gate::denies('delete-question', $question))
+            {
+                abort(403, 'Access Denied');
+            }
+            $question->delete();
+            return redirect()->back()->with('success', 'Your question has been deleted');
+        }
+        catch (\Throwable $ex)
+        {
+            return redirect()->back()->with('fail', $ex->getMessage());
+        }
+
+
     }
 }

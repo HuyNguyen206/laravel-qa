@@ -3,10 +3,12 @@
 namespace App;
 
 use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
     //
+    use SoftDeletes;
     protected $guarded = [];
     function user()
     {
@@ -21,7 +23,7 @@ class Question extends Model
 
     function getUrlAttribute()
     {
-        return route('questions.show', $this->id);
+        return route('questions.show', $this->slug);
     }
 
     function getDateCreatedAttribute()
@@ -39,5 +41,10 @@ class Question extends Model
         {
             return '';
         }
+    }
+
+    function getBodyHtmlAttribute()
+    {
+       return \Parsedown::instance()->text($this->body);
     }
 }

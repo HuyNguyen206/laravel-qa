@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
                             <h2>Questions</h2>
-                            <a href="{{route('questions.create')}}" class="btn btn-outline-secondary"> Add question</a>
+                            <a href="{{route('questions.create')}}" class="btn btn-outline-secondary"><i class="fas fa-plus-circle" title="Add Question"></i></a>
                         </div>
 
                     </div>
@@ -37,9 +37,25 @@
                                     </div>
 
                                     <div class="question media-body">
-                                        <h5>
-                                            <a href="{{$q->url}}">{{$q->title}}</a>
-                                        </h5>
+                                        <div class="question-title d-flex align-items-center justify-content-between">
+                                            <h5>
+                                                <a href="{{$q->url}}">{{$q->title}}</a>
+                                            </h5>
+                                            <div class="btn-group">
+                                                @can('update-question', $q)
+                                                <a href="{{route('questions.edit', $q->id)}}" class="btn btn-outline-info btn-sm d-inline-block"> <i title="Edit question" class="far fa-edit"></i> </a>
+                                                @endcan
+                                                @can('delete-question', $q)
+                                                    <form action="{{route('questions.destroy', $q->id)}}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-outline-danger d-inline-block btn-sm" onclick="return confirm('Are you sure?')"><i title="Delete question" class="fas fa-trash-alt"></i></button>
+                                                </form>
+                                                    @endcan
+                                            </div>
+
+                                        </div>
+
                                         <span>Asked by <b> <a
                                                     href="{{ $q->user->url }}">{{ $q->user->name  }}</a></b></span>
                                         <small class="text-muted">
