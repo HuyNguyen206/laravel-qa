@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionCreateRequest;
 use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -27,6 +29,7 @@ class QuestionController extends Controller
     public function create()
     {
         //
+        return view('question.create');
     }
 
     /**
@@ -35,9 +38,18 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuestionCreateRequest $request)
     {
         //
+        try {
+            Auth::user()->questions()->create($request->only('title', 'body'));
+            return redirect()->route('questions.index')->with('success', 'You question has been submitted');
+        }
+        catch (\Throwable $ex)
+        {
+            return redirect()->route('questions.index')->with('fail', $ex->getMessage());
+        }
+
     }
 
     /**

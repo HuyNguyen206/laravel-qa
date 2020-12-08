@@ -5,9 +5,16 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Questions</div>
+                    <div class="card-header">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h2>Questions</h2>
+                            <a href="{{route('questions.create')}}" class="btn btn-outline-secondary"> Add question</a>
+                        </div>
+
+                    </div>
 
                     <div class="card-body">
+                        @include('components._message-feedback')
                         @foreach ($questions as $q)
                             <div class="media ">
                                     <div class="question-info d-flex flex-column counters mr-5">

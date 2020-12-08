@@ -7,12 +7,13 @@ use Eloquent as Model;
 class Question extends Model
 {
     //
+    protected $guarded = [];
     function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    function setTitleAttributes($value)
+    function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = \Illuminate\Support\Str::slug($value);
