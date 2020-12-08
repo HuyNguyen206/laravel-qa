@@ -6,3 +6,41 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.pagination {
+    justify-content: center;
+    margin-top: 20px;
+}
+.counters
+{
+    text-align: center;
+    b {
+        display: block;
+        font-size: 1rem;
+    }
+    .answer
+    {
+        padding: 10px;
+    }
+}
+.question
+{
+    h5, span{
+        font-size: 1.3rem;
+    }
+    p{
+        font-size: 1rem;
+    }
+}
+
+.answered{
+    color: $green-color;
+    border: 1px solid $green-color;
+}
+
+.accept-as-answered{
+    background: $green-color;
+    color: white;
+}
+
+
