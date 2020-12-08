@@ -28,9 +28,9 @@
                                         </div>
                                         <div class="answer mt-3 {{ $q->status}} ">
                                             <b>
-                                                {{$q->answers}}
+                                                {{$q->answers_count}}
                                             </b>
-                                            {{str_plural('answer', $q->answers )}}
+                                            {{str_plural('answer', $q->answers_count )}}
                                         </div>
                                         <div class="view mt-2">
                                             {{$q->views . ' '. str_plural('view', $q->views )}}
