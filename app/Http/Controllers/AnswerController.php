@@ -41,9 +41,12 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Answer $answer)
+    public function edit(Question $question, Answer $answer)
     {
         //
+        $this->authorize('update', $answer);
+        // return the view of answer
+        return view('answer.edit', compact('question', 'answer'));
     }
 
     /**
@@ -53,9 +56,23 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Answer $answer)
+    public function update(Request $request, Question $question, Answer $answer)
     {
         //
+        //
+        $this->authorize('update', $answer);
+        $request->validate([
+            'body' => 'required'
+        ]);
+        try {
+            $answer->update($request->only('body'));
+            return redirect()->route('questions.show', $question->slug)->with('success', 'Your answer has been updated');
+        }
+        catch(\Throwable $ex)
+        {
+            return redirect()->back()->with('fail', $ex->getMessage());
+        }
+
     }
 
     /**
@@ -64,8 +81,19 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Answer $answer)
+    public function destroy(Question $question, Answer $answer)
     {
         //
+        $this->authorize('delete', $answer);
+        // return the view of answer
+        try {
+            $answer->delete();
+            return redirect()->back()->with('success', 'Your answer has been deleted');
+        }
+        catch(\Throwable $ex)
+        {
+            return redirect()->back()->with('fail', $ex->getMessage());
+        }
+
     }
 }

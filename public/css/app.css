@@ -10970,3 +10970,7 @@ a.text-dark:focus {
   color: #38c172;
 }
 
+button.delete-answer-button i {
+  color: #e3342f;
+}
+
