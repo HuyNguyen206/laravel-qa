@@ -34,6 +34,11 @@ class Answer extends Model
 
     }
 
+    function getStatusAttribute()
+    {
+        return $this->id == $this->question->best_answer_id ? 'vote-accepted' : '';
+    }
+
     function getDateCreatedAttribute()
     {
         return $this->created_at->diffForHumans();

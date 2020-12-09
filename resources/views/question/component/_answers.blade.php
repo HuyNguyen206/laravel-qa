@@ -16,7 +16,7 @@
                             <span class="votes-count">1234</span>
                             <a href="" title="This answer is not useful" class="vote-down off"><i
                                     class="fas fa-caret-down fa-3x"></i></a>
-                            <a href="" title="Mark this answer as best answer" class="vote-accepted"><i
+                            <a href="" title="Mark this answer as best answer" class="{{$a->status}}"><i
                                     class="fas fa-check fa-2x"></i></a>
                         </div>
                         <div class="media-body">
