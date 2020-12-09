@@ -47,4 +47,16 @@ class User extends Authenticatable
 //        return route('questions.show', $this->id);
         return '#';
     }
+
+    function getAvatarAttribute()
+    {
+        $email = "someone@somewhere.com";
+        $size = 40;
+        $grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size;
+
+        return $grav_url;
+    }
+
+
+
 }
