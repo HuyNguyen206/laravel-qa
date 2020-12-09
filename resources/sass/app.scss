@@ -43,4 +43,36 @@
     color: white;
 }
 
+.vote-info
+{
+    a{
+        color: black;
+    }
+    a.vote-up, a.vote-down
+    {
+        color: $gray-600;
+    }
+    a.vote-up.off, a.vote-down.off
+    {
+        color: $gray-500;
+    }
+    a.favorite{
+        &.favorited{
+            color: $orange;
+        }
+    }
+    .votes-count
+    {
+        font-size: 25px;
+    }
+    .favorite-count
+    {
+        font-size: 13px;
+    }
+    a.vote-accepted
+    {
+        color: $green;
+    }
+}
+
 

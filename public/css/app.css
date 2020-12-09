@@ -10940,3 +10940,33 @@ a.text-dark:focus {
   color: white;
 }
 
+.vote-info a {
+  color: black;
+}
+
+.vote-info a.vote-up,
+.vote-info a.vote-down {
+  color: #6c757d;
+}
+
+.vote-info a.vote-up.off,
+.vote-info a.vote-down.off {
+  color: #adb5bd;
+}
+
+.vote-info a.favorite.favorited {
+  color: #f6993f;
+}
+
+.vote-info .votes-count {
+  font-size: 25px;
+}
+
+.vote-info .favorite-count {
+  font-size: 13px;
+}
+
+.vote-info a.vote-accepted {
+  color: #38c172;
+}
+
