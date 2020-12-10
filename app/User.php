@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $grav_url;
     }
 
+    function favoriteQuestions()
+    {
+        return $this->belongsToMany(Question::class, 'favorites')->withTimestamps(); // 'question_id','user_id');
+    }
+
 
 
 }

@@ -52,4 +52,27 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    function favoriteUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps(); // 'user_id', 'question_id');
+    }
+
+    function getIsFavoriteAttribute()
+    {
+        return $this->isFavorite();
+    }
+    function getStatusFavoriteAttribute()
+    {
+        return $this->isFavorite() ? 'on' : '';
+    }
+    function getFavoriteCountsAttribute()
+    {
+        return $this->favoriteUsers->count();
+    }
+
+    function isFavorite()
+    {
+        return \Auth::user()->favoriteQuestions->contains('id', $this->id);
+    }
 }

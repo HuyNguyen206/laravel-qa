@@ -17,11 +17,22 @@
                         @include('components._message-feedback')
                         <div class="media">
                             <div class="vote-info d-flex flex-column align-items-center mr-4">
-                                <a href="" title="This question is useful" class="vote-up"><i><i class="fas fa-caret-up fa-3x"></i></i></a>
+                                <a href="" title="This question is useful" class="vote-up on"><i><i class="fas fa-caret-up fa-3x"></i></i></a>
                                 <span class="votes-count">1234</span>
-                                <a href="" title="This question is not useful" class="vote-down off"><i class="fas fa-caret-down fa-3x"></i></a>
-                                <a href="" title="CLick to mark as favorite question (Click again to undo)" class="favorite favorited"><i class="fas fa-star fa-2x"></i></a>
-                                <span class="favorite-count">123</span>
+                                <a href="" title="This question is not useful" class="vote-down"><i class="fas fa-caret-down fa-3x"></i></a>
+                                @if(Auth::check())
+                                    <a href="" title="CLick to mark as favorite question (Click again to undo)"  onclick="event.preventDefault(); document.getElementById('question-{{$question->id}}').submit()" class="favorite {{$question->status_favorite}}"><i class="fas fa-star fa-2x"></i></a>
+                                    <span class="favorite-count {{$question->status_favorite}}">{{ $question->favorite_counts }}</span>
+                                            <form action="/question/{{$question->id}}/favorite" method="post" id="question-{{$question->id}}">
+                                                @csrf
+                                                @if($question->is_favorite)
+                                                    @method('delete')
+                                                @endif
+                                            </form>
+                                    @else
+                                    <a href="" style="pointer-events: none" class="favorite"><i class="fas fa-star fa-2x"></i></a>
+                                    <span class="favorite-count">{{ $question->favorite_counts }}</span>
+                                @endif
                             </div>
                             <div class="media-body">
                                 <h2>

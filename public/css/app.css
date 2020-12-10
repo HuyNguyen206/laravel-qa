@@ -10946,15 +10946,21 @@ a.text-dark:focus {
 
 .vote-info a.vote-up,
 .vote-info a.vote-down {
-  color: #6c757d;
-}
-
-.vote-info a.vote-up.off,
-.vote-info a.vote-down.off {
   color: #adb5bd;
 }
 
-.vote-info a.favorite.favorited {
+.vote-info a.vote-up.on,
+.vote-info a.vote-down.on {
+  color: #495057;
+}
+
+.vote-info span.favorite,
+.vote-info a.favorite {
+  color: #adb5bd;
+}
+
+.vote-info span.favorite.on,
+.vote-info a.favorite.on {
   color: #f6993f;
 }
 
@@ -10962,8 +10968,12 @@ a.text-dark:focus {
   font-size: 25px;
 }
 
-.vote-info .favorite-count {
+.vote-info span.favorite-count {
   font-size: 13px;
+}
+
+.vote-info span.favorite-count.on {
+  color: #f6993f;
 }
 
 .vote-info a.vote-accepted {

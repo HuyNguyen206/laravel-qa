@@ -50,29 +50,37 @@
     }
     a.vote-up, a.vote-down
     {
-        color: $gray-600;
+        color: $gray-500;
     }
-    a.vote-up.off, a.vote-down.off
+
+    a.vote-up.on, a.vote-down.on
+    {
+        color: $gray-700;
+    }
+    span.favorite, a.favorite
     {
         color: $gray-500;
     }
-    a.favorite{
-        &.favorited{
-            color: $orange;
-        }
+    span.favorite.on, a.favorite.on{
+        color: $orange;
     }
     .votes-count
     {
         font-size: 25px;
     }
-    .favorite-count
+    span.favorite-count
     {
         font-size: 13px;
+        &.on
+        {
+            color: $orange;
+        }
     }
     a.vote-accepted
     {
         color: $green;
     }
+
 }
 
 button.delete-answer-button i
