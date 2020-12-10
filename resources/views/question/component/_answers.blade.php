@@ -16,8 +16,21 @@
                             <span class="votes-count">1234</span>
                             <a href="" title="This answer is not useful" class="vote-down off"><i
                                     class="fas fa-caret-down fa-3x"></i></a>
-                            <a href="" title="Mark this answer as best answer" class="{{$a->status}}"><i
-                                    class="fas fa-check fa-2x"></i></a>
+                            @can('acceptBestAnswer', $question)
+                                <a href="#" title="Mark this answer as best answer" class="{{$a->status}}"
+                                   onclick="event.preventDefault(); document.getElementById('accept-answer-{{$a->id}}').submit()"><i
+                                        class="fas fa-check fa-2x"></i></a>
+                                <form action="{{route('answer.accept', $a->id)}}" method="post" class="d-none"
+                                      id="accept-answer-{{$a->id}}">
+                                    @csrf
+                                </form>
+                            @else
+                                @if($a->is_best)
+                                    <a href="#" title="This answer is best answer" class="{{$a->status}}"
+                                       onclick="event.preventDefault();"><i
+                                            class="fas fa-check fa-2x"></i></a>
+                                @endif
+                            @endcan
                         </div>
                         <div class="media-body">
                             <p>
@@ -36,7 +49,8 @@
                                                 method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit" class="btn delete-answer-button" onclick="return confirm('Are you sure?')">
+                                                <button type="submit" class="btn delete-answer-button"
+                                                        onclick="return confirm('Are you sure?')">
                                                     <i class="fas fa-trash-alt fa-2x"></i>
                                                 </button>
                                             </form>

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Answer;
 use App\Question;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -94,5 +95,10 @@ class QuestionPolicy
     public function forceDelete(User $user, Question $question)
     {
         //
+    }
+
+    function acceptBestAnswer(User $user, Question $question)
+    {
+        return $user->id == $question->user_id;
     }
 }
