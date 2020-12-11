@@ -101,4 +101,14 @@ class QuestionPolicy
     {
         return $user->id == $question->user_id;
     }
+
+    function voteUpQuestion(User $user, Question $question)
+    {
+        return \Auth::check() && !$question->isVoteUp();
+    }
+
+    function voteDownQuestion(User $user, Question $question)
+    {
+        return \Auth::check() && !$question->isVoteDown();
+    }
 }

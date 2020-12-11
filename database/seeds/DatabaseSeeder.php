@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
     {
          $this->call(UserQuestionAnswerSeeder::class);
          $this->call(FavoritesSeeder::class);
-
+         $this->call(VotableQuestionSeeder::class);
     }
 }
