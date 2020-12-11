@@ -59,6 +59,36 @@ class Answer extends Model
         return $this->morphToMany(User::class, 'votable')->withPivot('vote');
     }
 
+    function votesUp()
+    {
+        return $this->voteUser()->wherePivot('vote', 1);
+    }
+
+    function votesDown()
+    {
+        return $this->voteUser()->wherePivot('vote', -1);
+    }
+
+    function getVoteUpStatusAttribute()
+    {
+        return $this->isVoteUp() ? 'on' : '';
+    }
+
+    function isVoteUp()
+    {
+        return auth()->check() ? auth()->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', 1)->count() > 0 : false;
+    }
+
+    function getVoteDownStatusAttribute()
+    {
+        return $this->isVoteDown() ? 'on' : '';
+    }
+
+    function isVoteDown()
+    {
+        return auth()->check() ? auth()->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
+    }
+
 
 
 }

@@ -93,4 +93,14 @@ class AnswerPolicy
     {
         //
     }
+
+    function voteUpAnswer(User $user, Answer $answer)
+    {
+        return \Auth::check() && !$answer->isVoteUp();
+    }
+
+    function voteDownAnswer(User $user, Answer $answer)
+    {
+        return \Auth::check() && !$answer->isVoteDown();
+    }
 }
