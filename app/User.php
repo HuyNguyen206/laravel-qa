@@ -52,7 +52,7 @@ class User extends Authenticatable
     {
         $email = "someone@somewhere.com";
         $size = 40;
-        $grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size;
+        $grav_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=" . $size;
 
         return $grav_url;
     }
@@ -75,33 +75,33 @@ class User extends Authenticatable
     function voteQuestion(Question $question, $vote)
     {
         $voteQuestions = $this->voteQuestions();
-        if($voteQuestions->wherePivot('votable_id', $question->id)->exists())
-        {
-            $voteQuestions->updateExistingPivot($question->id, ['vote' => $vote]);
-        }
-        else{
-            $voteQuestions->attach($question->id,  ['vote' => $vote]);
-        }
-        $votesUp= (int) $question->votesUp()->sum('vote');
-        $votesDown= (int) $question->votesDown()->sum('vote');
-        $question->votes = $votesUp + $votesDown;
-        $question->save();
+        $this->_vote($voteQuestions, $question, $vote);
     }
 
     function voteAnswer(Answer $answer, $vote)
     {
         $voteAnswers = $this->voteAnswers();
-        if($voteAnswers->wherePivot('votable_id', $answer->id)->exists())
+        $this->_vote($voteAnswers, $answer, $vote, false);
+    }
+
+    private function _vote($relationMethod, $model, $vote, $isQuestion = true)
+    {
+        if ($relationMethod->wherePivot('votable_id', $model->id)->exists()) {
+            $relationMethod->updateExistingPivot($model->id, ['vote' => $vote]);
+        } else {
+            $relationMethod->attach($model->id, ['vote' => $vote]);
+        }
+        $votesUp = (int)$model->votesUp()->sum('vote');
+        $votesDown = (int)$model->votesDown()->sum('vote');
+        if ($isQuestion)
         {
-            $voteAnswers->updateExistingPivot($answer->id, ['vote' => $vote]);
+            $model->votes = $votesUp + $votesDown;
         }
-        else{
-            $voteAnswers->attach($answer->id,  ['vote' => $vote]);
+        else
+        {
+            $model->votes_count = $votesUp + $votesDown;
         }
-        $votesUp= (int) $answer->votesUp()->sum('vote');
-        $votesDown= (int) $answer->votesDown()->sum('vote');
-        $answer->votes_count = $votesUp + $votesDown;
-        $answer->save();
+        $model->save();
     }
 
 

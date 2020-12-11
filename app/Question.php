@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Http\Traits\VotableTrait;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
     //
-    use SoftDeletes;
+    use SoftDeletes, VotableTrait;
     protected $guarded = [];
     function user()
     {
@@ -76,38 +77,15 @@ class Question extends Model
         return \Auth::user()->favoriteQuestions->contains('id', $this->id);
     }
 
-    function voteUser()
-    {
-        return $this->morphToMany(User::class, 'votable')->withPivot('vote');;
-    }
-
-    function votesUp()
-    {
-        return $this->voteUser()->wherePivot('vote', 1);
-    }
-
-    function votesDown()
-    {
-        return $this->voteUser()->wherePivot('vote', -1);
-    }
-
-    function getVoteUpStatusAttribute()
-    {
-        return $this->isVoteUp() ? 'on' : '';
-    }
-
     function isVoteUp()
     {
         return auth()->check() ? auth()->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', 1)->count() > 0 : false;
     }
 
-    function getVoteDownStatusAttribute()
-    {
-        return $this->isVoteDown() ? 'on' : '';
-    }
 
     function isVoteDown()
     {
         return auth()->check() ? auth()->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
     }
+
 }
