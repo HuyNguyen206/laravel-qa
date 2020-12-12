@@ -48,8 +48,10 @@
                 </div>
             </div>
         </div>
-        <hr>
-        @include('question.component._answers')
+
+        @if($question->answers->count() > 0)
+            @include('question.component._answers')
+        @endif
         @include('question.component._answers-input')
     </div>
 @endsection

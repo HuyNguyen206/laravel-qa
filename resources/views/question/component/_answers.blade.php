@@ -1,4 +1,4 @@
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-2">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -8,7 +8,7 @@
                     </h4>
                 </div>
                 <hr>
-                @foreach ($question->answers as $a)
+                @foreach ($question->answers->sortByDesc('votes_count') as $a)
                     <div class="media">
                         <div class="vote-info d-flex flex-column align-items-center mr-4">
                             <x-vote voteUpTitle="This answer is useful" voteDownTitle="This answer is not useful"

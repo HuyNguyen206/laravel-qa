@@ -17,7 +17,7 @@
 
                     <div class="card-body">
                         @include('components._message-feedback')
-                        @foreach ($questions as $q)
+                        @forelse ($questions as $q)
                             <div class="media ">
                                     <div class="question-info d-flex flex-column counters mr-5">
                                         <div class="votes">
@@ -69,9 +69,12 @@
                                     </div>
                             </div>
 
-
                             <hr>
-                        @endforeach
+                            @empty
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Sorry</strong> There are no question available at the moment
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
