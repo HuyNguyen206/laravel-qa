@@ -30,9 +30,9 @@
                             @endcan
                         </div>
                         <div class="media-body">
-                            <p>
-                                {!!  $a->body_html !!}
-                            </p>
+                          <div>
+                              {!! $a->body_html !!}
+                          </div>
                             <div class="row">
                                 <div class="col-4">
                                     <div class="d-flex align-items-center">

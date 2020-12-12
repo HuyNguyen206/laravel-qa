@@ -63,9 +63,9 @@
                                         <small class="text-muted">
                                             {{$q->date_created}}
                                         </small>
-                                        <p class="mt-4">
-                                            {{ \Illuminate\Support\Str::limit($q->body, 250) }}
-                                        </p>
+                                        <div class="mt-4">
+                                            {!! str_limit($q->body_html, 250) !!}
+                                        </div>
                                     </div>
                             </div>
 

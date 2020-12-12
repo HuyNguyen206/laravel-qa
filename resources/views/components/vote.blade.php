@@ -2,7 +2,7 @@
    $formId = "{$lowerModel}-{$model->id}";
    @endphp
     <a href="" title="{{$voteUpTitle}}" class="vote-up {{$model->vote_up_status}}"
-       onclick="event.preventDefault(); @can($canVoteUp, $model) document.getElementById("vote-up-{{$formId}}").submit()@endcan "><i><i class="fas fa-caret-up fa-3x"></i></i></a>
+       onclick="event.preventDefault(); @can($canVoteUp, $model) document.getElementById('vote-up-{{$formId}}').submit()@endcan "><i><i class="fas fa-caret-up fa-3x"></i></i></a>
     @can($canVoteUp, $model)
         <form action="{{route($lowerModel.'.vote', $model)}}" method="post" class="d-none"  id="vote-up-{{$formId}}">
             @csrf

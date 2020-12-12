@@ -22,7 +22,7 @@ class Answer extends Model
 
     function getBodyHtmlAttribute()
     {
-        return \Parsedown::instance()->text($this->body);
+        return clean(\Parsedown::instance()->text($this->body));
     }
 
     protected static function booted()

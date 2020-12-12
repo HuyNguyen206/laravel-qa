@@ -38,9 +38,9 @@
                                     {{ $question->title }}
                                 </h2>
                                 <hr>
-                                <p>
+                                <div>
                                     {!! $question->body_html !!}
-                                </p>
+                                </div>
                             </div>
                         </div>
                         <x-author :model="$question" label="Asked by"></x-author>
