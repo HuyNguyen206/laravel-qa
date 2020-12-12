@@ -46,7 +46,8 @@
             </div>
             <div class="col-4"></div>
             <div class="col-4">
-                <x-author :model="$answer" label="Answered by"></x-author>
+{{--                <x-author :model="$answer" label="Answered by"></x-author>--}}
+                <user-info :model="{{$answer}}" label="Answered by"></user-info>
             </div>
         </div>
 

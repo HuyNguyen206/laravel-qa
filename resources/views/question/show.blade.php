@@ -43,7 +43,8 @@
                                 </div>
                             </div>
                         </div>
-                        <x-author :model="$question" label="Asked by"></x-author>
+{{--                        <x-author :model="$question" label="Asked by"></x-author>--}}
+                        <user-info :model="{{ $question }}" label="Asked by"></user-info>
                     </div>
                 </div>
             </div>

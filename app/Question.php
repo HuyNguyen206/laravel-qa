@@ -11,6 +11,8 @@ class Question extends Model
     //
     use SoftDeletes, VotableTrait;
     protected $guarded = [];
+    protected $with = ['user'];
+    protected $appends = ['date_created'];
     function user()
     {
         return $this->belongsTo(User::class, 'user_id');

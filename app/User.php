@@ -36,7 +36,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    protected $appends = ['url', 'avatar'];
     function questions()
     {
         return $this->hasMany(Question::class, 'user_id');

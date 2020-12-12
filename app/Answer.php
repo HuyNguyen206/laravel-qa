@@ -10,6 +10,8 @@ class Answer extends Model
     //
     use VotableTrait;
     protected $guarded = [];
+    protected $with = ['user'];
+    protected $appends = ['date_created'];
     function question()
     {
         return $this->belongsTo(Question::class);
