@@ -11,28 +11,8 @@
                 @foreach ($question->answers as $a)
                     <div class="media">
                         <div class="vote-info d-flex flex-column align-items-center mr-4">
-                            <a href="" title="This answer is useful" class="vote-up {{$a->vote_up_status}}"
-                               onclick="event.preventDefault(); @can('voteUpAnswer', $a) document.getElementById('vote-up-answer-{{$a->id}}').submit()@endcan "><i><i
-                                        class="fas fa-caret-up fa-3x"></i></i></a>
-                            @can('voteUpAnswer', $a)
-                                <form action="{{route('answer.vote', $a->id)}}" method="post" class="d-none"  id="vote-up-answer-{{$a->id}}">
-                                    @csrf
-                                    <input type="hidden" name="vote" value="1">
-                                </form>
-                            @endcan
-
-                            <span class="votes-count">{{$a->votes_count}}</span>
-
-                            <a href="" title="This answer is not useful" class="vote-down {{$a->vote_down_status}}"
-                               onclick="event.preventDefault(); @can('voteDownAnswer', $a) document.getElementById('vote-down-answer-{{$a->id}}').submit()@endcan "><i
-                                    class="fas fa-caret-down fa-3x"></i></a>
-                            @can('voteDownAnswer', $a)
-                                <form action="{{route('answer.vote', $a->id)}}" method="post" class="d-none"  id="vote-down-answer-{{$a->id}}">
-                                    @csrf
-                                    <input type="hidden" name="vote" value="-1">
-                                </form>
-                            @endcan
-
+                            <x-vote voteUpTitle="This answer is useful" voteDownTitle="This answer is not useful"
+                                    lowerModel="answer" upperModel="Answer" :model="$a"></x-vote>
                             @can('acceptBestAnswer', $question)
                                 <a href="#" title="Mark this answer as best answer" class="{{$a->status}}"
                                    onclick="event.preventDefault(); document.getElementById('accept-answer-{{$a->id}}').submit()"><i
@@ -77,14 +57,7 @@
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4">
-                                    <div class="d-flex flex-column mr-4 float-right">
-                                        <span class="text-muted"> Answered {{ $a->date_created }}</span>
-                                        <div class="answer-info d-flex align-items-center mt-2">
-                                            <a href="{{ $a->user->url }}" class="d-inline-block mr-2"> <img
-                                                    src="{{ $a->user->avatar }}" alt=""> </a>
-                                            <a href="{{ $a->user->url }}"> {{ $a->user->name }}</a>
-                                        </div>
-                                    </div>
+                                    <x-author :model="$a" label="Answered by"></x-author>
                                 </div>
                             </div>
 

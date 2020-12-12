@@ -17,27 +17,8 @@
                         @include('components._message-feedback')
                         <div class="media">
                             <div class="vote-info d-flex flex-column align-items-center mr-4">
-
-                                <a href="" title="This question is useful" class="vote-up {{$question->vote_up_status}}"
-                                   onclick="event.preventDefault(); @can('voteUpQuestion', $question) document.getElementById('vote-up-question-{{$question->id}}').submit()@endcan "><i><i class="fas fa-caret-up fa-3x"></i></i></a>
-                                @can('voteUpQuestion', $question)
-                                <form action="{{route('question.vote', $question)}}" method="post" class="d-none"  id="vote-up-question-{{$question->id}}">
-                                    @csrf
-                                    <input type="hidden" name="vote" value="1">
-                                </form>
-                                @endcan
-
-                                <span class="votes-count">{{$question->votes}}</span>
-
-                                <a href="" title="This question is not useful" class="vote-down {{$question->vote_down_status}}"
-                                   onclick="event.preventDefault(); @can('voteDownQuestion', $question) document.getElementById('vote-down-question-{{$question->id}}').submit() @endcan"><i class="fas fa-caret-down fa-3x"></i></a>
-                                @can('voteDownQuestion', $question)
-                                <form action="{{route('question.vote', $question)}}" method="post" class="d-none" id="vote-down-question-{{$question->id}}">
-                                    @csrf
-                                    <input type="hidden" name="vote" value="-1">
-                                </form>
-                                @endcan
-
+                            <x-vote voteUpTitle="This question is useful" voteDownTitle="This question is not useful"
+                            lowerModel="question" upperModel="Question" :model="$question"></x-vote>
                                 @if(Auth::check())
                                     <a href="" title="CLick to mark as favorite question (Click again to undo)"  onclick="event.preventDefault(); document.getElementById('question-{{$question->id}}').submit()" class="favorite {{$question->status_favorite}}"><i class="fas fa-star fa-2x"></i></a>
                                     <span class="favorite-count {{$question->status_favorite}}">{{ $question->favorite_counts }}</span>
@@ -62,13 +43,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="d-flex flex-column mr-4 float-right">
-                            <span class="text-muted"> Asked by {{ $question->date_created }}</span>
-                            <div class="answer-info d-flex align-items-center mt-2">
-                                <a href="{{ $question->user->url }}" class="d-inline-block mr-2"> <img src="{{ $question->user->avatar }}" alt=""> </a>
-                                <a href="{{ $question->user->url }}"> {{ $question->user->name }}</a>
-                            </div>
-                        </div>
+                        <x-author :model="$question" label="Asked by"></x-author>
                     </div>
                 </div>
             </div>
