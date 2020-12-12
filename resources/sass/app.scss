@@ -87,5 +87,16 @@ button.delete-answer-button i
 {
     color: $danger;
 }
+div.horizon-except-last
+{
+    padding: 20px 0;
+    &:not(:last-child)
+    {
+        border-bottom: 1px solid rgba(128, 128, 128, 0.30980392156862746)
+    }
+}
+
+
+
 
 

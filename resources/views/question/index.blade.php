@@ -18,58 +18,7 @@
                     <div class="card-body">
                         @include('components._message-feedback')
                         @forelse ($questions as $q)
-                            <div class="media ">
-                                    <div class="question-info d-flex flex-column counters mr-5">
-                                        <div class="votes">
-                                            <b>
-                                                {{$q->votes}}
-                                            </b>
-                                            {{ str_plural('vote', $q->votes )}}
-                                        </div>
-                                        <div class="answer mt-3 {{ $q->status}} ">
-                                            <b>
-                                                {{$q->answers_count}}
-                                            </b>
-                                            {{str_plural('answer', $q->answers_count )}}
-                                        </div>
-                                        <div class="view mt-2">
-                                            {{$q->views . ' '. str_plural('view', $q->views )}}
-                                        </div>
-
-                                    </div>
-
-                                    <div class="question media-body">
-                                        <div class="question-title d-flex align-items-center justify-content-between">
-                                            <h5>
-                                                <a href="{{$q->url}}">{{$q->title}}</a>
-                                            </h5>
-                                            <div class="btn-group">
-                                                @can('update', $q)
-                                                <a href="{{route('questions.edit', $q->id)}}" class="btn btn-outline-info btn-sm d-inline-block"> <i title="Edit question" class="far fa-edit"></i> </a>
-                                                @endcan
-                                                @can('delete', $q)
-                                                    <form action="{{route('questions.destroy', $q->id)}}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-outline-danger d-inline-block btn-sm" onclick="return confirm('Are you sure?')"><i title="Delete question" class="fas fa-trash-alt"></i></button>
-                                                </form>
-                                                    @endcan
-                                            </div>
-
-                                        </div>
-
-                                        <span>Asked by <b> <a
-                                                    href="{{ $q->user->url }}">{{ $q->user->name  }}</a></b></span>
-                                        <small class="text-muted">
-                                            {{$q->date_created}}
-                                        </small>
-                                        <div class="mt-4">
-                                            {!! str_limit($q->body_html, 250) !!}
-                                        </div>
-                                    </div>
-                            </div>
-
-                            <hr>
+                            <x-question :question="$q"></x-question>
                             @empty
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                 <strong>Sorry</strong> There are no question available at the moment

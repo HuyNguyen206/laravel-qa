@@ -10984,3 +10984,11 @@ button.delete-answer-button i {
   color: #e3342f;
 }
 
+div.horizon-except-last {
+  padding: 20px 0;
+}
+
+div.horizon-except-last:not(:last-child) {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3098039216);
+}
+
