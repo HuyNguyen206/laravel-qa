@@ -68,7 +68,7 @@ class AnswerController extends Controller
             $answer->update($request->only('body'));
             if($request->expectsJson())
             {
-                return response()->json(['isSuccess' => true, 'code' => 200, 'message' => 'Your answer has been updated', 'body_html' => $answer->body_html], 200);
+                return response()->json(['code' => 200, 'message' => 'Your answer has been updated', 'body_html' => $answer->body_html], 200);
             }
            else
                return redirect()->route('questions.show', $question->slug)->with('success', 'Your answer has been updated');
@@ -76,7 +76,7 @@ class AnswerController extends Controller
         catch(\Throwable $ex)
         {
             if($request->expectsJson()) {
-                return response()->json(['isSuccess' => false, 'code' => 500, 'message' => $ex->getMessage()], 500);
+                return response()->json(['code' => 500, 'message' => $ex->getMessage()], 500);
             }
             else
                 return redirect()->back()->with('fail', $ex->getMessage());
@@ -97,11 +97,26 @@ class AnswerController extends Controller
         // return the view of answer
         try {
             $answer->delete();
-            return redirect()->back()->with('success', 'Your answer has been deleted');
+            if(\request()->expectsJson())
+            {
+                return response()->json(['code'=> 200, 'message' => 'Your answer has been deleted'], 200);
+            }
+            else
+            {
+                return redirect()->back()->with('success', 'Your answer has been deleted');
+            }
+
         }
         catch(\Throwable $ex)
         {
-            return redirect()->back()->with('fail', $ex->getMessage());
+            if(\request()->expectsJson()) {
+                return response()->json(['code'=> 500, 'message' => $ex->getMessage()], 500);
+            }
+            else
+            {
+                return redirect()->back()->with('fail', $ex->getMessage());
+            }
+
         }
 
     }

@@ -40,16 +40,9 @@
                                         title="Edit question" class="far fa-edit fa-2x"></i></a>
                             @endcan
                             @can('delete', $answer)
-                                <form
-                                    action="{{ route('questions.answers.destroy', [$question->id, $answer->id]) }}"
-                                    method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn delete-answer-button"
-                                            onclick="return confirm('Are you sure?')">
+                                    <button class="btn delete-answer-button" @click="destroy">
                                         <i class="fas fa-trash-alt fa-2x"></i>
                                     </button>
-                                </form>
                             @endcan
                         </div>
 
