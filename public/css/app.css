@@ -10992,3 +10992,7 @@ div.horizon-except-last:not(:last-child) {
   border-bottom: 1px solid rgba(128, 128, 128, 0.3098039216);
 }
 
+[v-cloak] {
+  display: none;
+}
+

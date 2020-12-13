@@ -11,7 +11,7 @@ class Answer extends Model
     use VotableTrait;
     protected $guarded = [];
     protected $with = ['user'];
-    protected $appends = ['date_created'];
+    protected $appends = ['date_created', 'body_html'];
     function question()
     {
         return $this->belongsTo(Question::class);

@@ -66,11 +66,20 @@ class AnswerController extends Controller
         ]);
         try {
             $answer->update($request->only('body'));
-            return redirect()->route('questions.show', $question->slug)->with('success', 'Your answer has been updated');
+            if($request->expectsJson())
+            {
+                return response()->json(['isSuccess' => true, 'code' => 200, 'message' => 'Your answer has been updated', 'body_html' => $answer->body_html], 200);
+            }
+           else
+               return redirect()->route('questions.show', $question->slug)->with('success', 'Your answer has been updated');
         }
         catch(\Throwable $ex)
         {
-            return redirect()->back()->with('fail', $ex->getMessage());
+            if($request->expectsJson()) {
+                return response()->json(['isSuccess' => false, 'code' => 500, 'message' => $ex->getMessage()], 500);
+            }
+            else
+                return redirect()->back()->with('fail', $ex->getMessage());
         }
 
     }
