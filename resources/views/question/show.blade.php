@@ -19,19 +19,20 @@
                             <div class="vote-info d-flex flex-column align-items-center mr-4">
                             <x-vote voteUpTitle="This question is useful" voteDownTitle="This question is not useful"
                             lowerModel="question" upperModel="Question" :model="$question"></x-vote>
-                                @if(Auth::check())
-                                    <a href="" title="CLick to mark as favorite question (Click again to undo)"  onclick="event.preventDefault(); document.getElementById('question-{{$question->id}}').submit()" class="favorite {{$question->status_favorite}}"><i class="fas fa-star fa-2x"></i></a>
-                                    <span class="favorite-count {{$question->status_favorite}}">{{ $question->favorite_counts }}</span>
-                                            <form action="/question/{{$question->id}}/favorite" method="post" id="question-{{$question->id}}">
-                                                @csrf
-                                                @if($question->is_favorite)
-                                                    @method('delete')
-                                                @endif
-                                            </form>
-                                    @else
-                                    <a href="" style="pointer-events: none" class="favorite"><i class="fas fa-star fa-2x"></i></a>
-                                    <span class="favorite-count">{{ $question->favorite_counts }}</span>
-                                @endif
+                                <favorite :question="{{ $question  }}"></favorite>
+{{--                                @if(Auth::check())--}}
+{{--                                    <a href="" title="CLick to mark as favorite question (Click again to undo)"  onclick="event.preventDefault(); document.getElementById('question-{{$question->id}}').submit()" class="favorite {{$question->status_favorite}}"><i class="fas fa-star fa-2x"></i></a>--}}
+{{--                                    <span class="favorite-count {{$question->status_favorite}}">{{ $question->favorite_counts }}</span>--}}
+{{--                                            <form action="/question/{{$question->id}}/favorite" method="post" id="question-{{$question->id}}">--}}
+{{--                                                @csrf--}}
+{{--                                                @if($question->is_favorite)--}}
+{{--                                                    @method('delete')--}}
+{{--                                                @endif--}}
+{{--                                            </form>--}}
+{{--                                    @else--}}
+{{--                                    <a href="" style="pointer-events: none" class="favorite"><i class="fas fa-star fa-2x"></i></a>--}}
+{{--                                    <span class="favorite-count">{{ $question->favorite_counts }}</span>--}}
+{{--                                @endif--}}
                             </div>
                             <div class="media-body">
                                 <h2>
@@ -57,3 +58,9 @@
     </div>
 @endsection
 
+<script>
+    import Favorite from "../../js/components/Favorite";
+    export default {
+        components: {Favorite}
+    }
+</script>
