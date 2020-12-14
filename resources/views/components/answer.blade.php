@@ -3,21 +3,25 @@
         <div class="vote-info d-flex flex-column align-items-center mr-4">
             <x-vote voteUpTitle="This answer is useful" voteDownTitle="This answer is not useful"
                     lowerModel="answer" upperModel="Answer" :model="$answer"></x-vote>
-            @can('acceptBestAnswer', $question)
-                <a href="#" title="Mark this answer as best answer" class="{{$answer->status}}"
-                   onclick="event.preventDefault(); document.getElementById('accept-answer-{{$answer->id}}').submit()"><i
-                        class="fas fa-check fa-2x"></i></a>
-                <form action="{{route('answer.accept', $answer->id)}}" method="post" class="d-none"
-                      id="accept-answer-{{$answer->id}}">
-                    @csrf
-                </form>
-            @else
-                @if($answer->is_best)
-                    <a href="#" title="This answer is best answer" class="{{$answer->status}}"
-                       onclick="event.preventDefault();"><i
-                            class="fas fa-check fa-2x"></i></a>
-                @endif
-            @endcan
+            <best-answer :answer="{{$answer}}">
+
+            </best-answer>
+{{--            @can('acceptBestAnswer', $question)--}}
+{{--                <a href="#" title="Mark this answer as best answer" class="{{$answer->status}}"--}}
+{{--                   onclick="event.preventDefault(); document.getElementById('accept-answer-{{$answer->id}}').submit()"><i--}}
+{{--                        class="fas fa-check fa-2x"></i></a>--}}
+{{--                <form action="{{route('answer.accept', $answer->id)}}" method="post" class="d-none"--}}
+{{--                      id="accept-answer-{{$answer->id}}">--}}
+{{--                    @csrf--}}
+{{--                </form>--}}
+{{--            @else--}}
+{{--                @if($answer->is_best)--}}
+{{--                    <a href="#" title="This answer is best answer" class="{{$answer->status}}"--}}
+{{--                       onclick="event.preventDefault();"><i--}}
+{{--                            class="fas fa-check fa-2x"></i></a>--}}
+{{--                @endif--}}
+{{--            @endcan--}}
+
         </div>
         <div class="media-body">
             <form action="" v-if="editing" @submit.prevent="update">

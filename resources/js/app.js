@@ -10,9 +10,9 @@ require('./fontawesome');
 window.Vue = require('vue');
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-
+import Authorization from './authorization/authorize';
 Vue.use(VueIziToast);
-
+Vue.use(Authorization)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,6 +27,7 @@ Vue.use(VueIziToast);
 Vue.component('user-info', require('./components/UserInfo.vue').default);
 Vue.component('answer', require('./components/Answer.vue').default);
 Vue.component('favorite', require('./components/Favorite.vue').default);
+Vue.component('best-answer', require('./components/BestAnswer.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -35,4 +36,14 @@ Vue.component('favorite', require('./components/Favorite.vue').default);
 
 const app = new Vue({
     el: '#app',
+    // methods:{
+    //     handleUpdateBestAnswer(data)
+    //     {
+    //         console.log(data)
+    //         this.bestAnswerId = data.id
+    //     },
+    //     data:{
+    //             bestAnswerId: 4
+    //     }
+    // }
 });

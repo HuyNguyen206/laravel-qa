@@ -29,10 +29,10 @@
             classes(){
                 return ['favorite-count', this.statusFavorite]
             },
-            isSignIn()
-            {
-                return window.Auth.isSignIn;
-            }
+            // isSignIn()
+            // {
+            //     return window.Auth.isSignIn;
+            // }
         },
          data(){
             return {
