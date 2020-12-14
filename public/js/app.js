@@ -12683,14 +12683,70 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     classes: function classes() {
       return ['favorite-count', this.statusFavorite];
+    },
+    isSignIn: function isSignIn() {
+      return window.Auth.isSignIn;
     }
   },
   data: function data() {
     return {
       count: this.question.favorite_counts,
       statusFavorite: this.question.status_favorite,
-      isSignIn: true
+      endPoint: "/question/".concat(this.question.id, "/favorite")
     };
+  },
+  methods: {
+    createOrUpdate: function createOrUpdate() {
+      if (this.statusFavorite == '') {
+        this.favorite();
+      } else {
+        this.unFavorite();
+      }
+    },
+    favorite: function favorite() {
+      var _this = this;
+
+      axios.post(this.endPoint).then(function (_ref) {
+        var data = _ref.data;
+
+        if (data.code == 200) {
+          _this.statusFavorite = 'on';
+          _this.count = data.count;
+        } else {
+          _this.$toast.error(err.response.data.message, 'Error', {
+            timeOut: 5000,
+            position: 'topRight'
+          });
+        }
+      })["catch"](function (err) {
+        _this.$toast.error(err.response.data.message, 'Error', {
+          timeOut: 5000,
+          position: 'topRight'
+        });
+      });
+    },
+    unFavorite: function unFavorite() {
+      var _this2 = this;
+
+      axios["delete"](this.endPoint).then(function (_ref2) {
+        var data = _ref2.data;
+
+        if (data.code == 200) {
+          _this2.statusFavorite = '';
+          _this2.count = data.count;
+        } else {
+          _this2.$toast.error(err.response.data.message, 'Error', {
+            timeOut: 5000,
+            position: 'topRight'
+          });
+        }
+      })["catch"](function (err) {
+        _this2.$toast.error(err.response.data.message, 'Error', {
+          timeOut: 5000,
+          position: 'topRight'
+        });
+      });
+    }
   }
 });
 
@@ -48992,6 +49048,12 @@ var render = function() {
                 href: "",
                 title:
                   "CLick to mark as favorite question (Click again to undo)"
+              },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.createOrUpdate($event)
+                }
               }
             },
             [_c("i", { staticClass: "fas fa-star fa-2x" })]
@@ -49000,7 +49062,24 @@ var render = function() {
           _c("span", { class: _vm.classes }, [_vm._v(_vm._s(_vm.count))])
         ])
       : _c("div", { staticClass: "d-flex flex-column align-items-center" }, [
-          _vm._m(0),
+          _c(
+            "a",
+            {
+              staticClass: "favorite",
+              attrs: { href: "" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.$toast.warning(
+                    "Please sign in to favorite question",
+                    "Warning",
+                    { timeOut: 5000 }
+                  )
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-star fa-2x" })]
+          ),
           _vm._v(" "),
           _c("span", { staticClass: "favorite-count" }, [
             _vm._v(_vm._s(_vm.count))
@@ -49008,22 +49087,7 @@ var render = function() {
         ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "favorite",
-        staticStyle: { "pointer-events": "none" },
-        attrs: { href: "" }
-      },
-      [_c("i", { staticClass: "fas fa-star fa-2x" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

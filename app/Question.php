@@ -76,7 +76,7 @@ class Question extends Model
 
     function isFavorite()
     {
-        return \Auth::user()->favoriteQuestions->contains('id', $this->id);
+        return auth()->check() ?  \Auth::user()->favoriteQuestions->contains('id', $this->id) : false;
     }
 
     function isVoteUp()

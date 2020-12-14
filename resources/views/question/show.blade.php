@@ -10,9 +10,7 @@
                             <h2>Question detail</h2>
                             <a href="{{route('questions.index')}}" class="btn btn-outline-secondary"> Back to all questions</a>
                         </div>
-
                     </div>
-
                     <div class="card-body">
                         @include('components._message-feedback')
                         <div class="media">
@@ -50,7 +48,6 @@
                 </div>
             </div>
         </div>
-
         @if($question->answers->count() > 0)
             @include('question.component._answers')
         @endif
@@ -58,9 +55,3 @@
     </div>
 @endsection
 
-<script>
-    import Favorite from "../../js/components/Favorite";
-    export default {
-        components: {Favorite}
-    }
-</script>
