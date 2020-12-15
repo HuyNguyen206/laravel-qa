@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        @if($question->answers->count() > 0)
+        @if($question->answers_count > 0)
             <answers :question="{{$question}}"></answers>
 {{--            @include('question.component._answers')--}}
         @endif

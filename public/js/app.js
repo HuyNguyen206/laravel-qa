@@ -12718,6 +12718,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Answers",
@@ -12729,6 +12730,32 @@ __webpack_require__.r(__webpack_exports__);
     title: function title() {
       console.log(this.question);
       return this.question.answers_count + " " + (this.question.answers_count > 1 ? "answers" : "answer");
+    }
+  },
+  data: function data() {
+    return {
+      answers: [],
+      // id: this.question.id,
+      url: "/questions/".concat(this.question.id, "/answers")
+    };
+  },
+  created: function created() {
+    this.fetchAnswers();
+  },
+  methods: {
+    loadMore: function loadMore() {},
+    fetchAnswers: function fetchAnswers() {
+      var _this = this;
+
+      axios.get(this.url).then(function (_ref) {
+        var data = _ref.data;
+        // console.log(data)
+        _this.answers = data.data;
+      })["catch"](function (err) {
+        _this.$toast.error(err.response.data.message, 'Error', {
+          timeOut: 5000
+        });
+      });
     }
   }
 });
@@ -49497,11 +49524,21 @@ var render = function() {
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _vm._l(_vm.question.answers, function(answer) {
+            _vm._l(_vm.answers, function(answer) {
               return _c("answer", { key: answer.id, attrs: { answer: answer } })
             })
           ],
           2
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass:
+              "btn btn-outline-secondary d-inline-block mx-auto mb-3",
+            on: { click: _vm.loadMore }
+          },
+          [_vm._v("Load more answer")]
         )
       ])
     ])

@@ -13,6 +13,10 @@ class AnswerController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Question $question)
+    {
+        return $question->answers()->with('user')->simplePaginate(3);
+    }
     /**
      * Store a newly created resource in storage.
      *
