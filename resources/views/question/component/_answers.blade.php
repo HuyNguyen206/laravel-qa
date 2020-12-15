@@ -8,6 +8,7 @@
                     </h4>
                 </div>
                 <hr>
+
                 @foreach ($question->answers->sortByDesc('votes_count') as $a)
 {{--                    @include('question.component._answer')--}}
                     <x-answer :question="$question" :answer="$a"></x-answer>
@@ -16,6 +17,5 @@
             </div>
         </div>
     </div>
-
 
 </div>
