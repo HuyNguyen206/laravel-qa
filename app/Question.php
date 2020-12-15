@@ -12,7 +12,7 @@ class Question extends Model
     use SoftDeletes, VotableTrait;
     protected $guarded = [];
     protected $with = ['user'];
-    protected $appends = ['date_created', 'favorite_counts', 'status_favorite'];
+    protected $appends = ['date_created', 'favorite_counts', 'status_favorite', 'vote_up_status', 'vote_down_status'];
     function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -89,5 +89,15 @@ class Question extends Model
     {
         return auth()->check() ? auth()->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
     }
+
+//    function getIsVoteUpAttribute()
+//    {
+//        return $this->isVoteUp();
+//    }
+//
+//    function getIsVoteDownAttribute()
+//    {
+//        return $this->isVoteDown();
+//    }
 
 }

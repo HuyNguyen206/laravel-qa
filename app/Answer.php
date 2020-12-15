@@ -11,7 +11,7 @@ class Answer extends Model
     use VotableTrait;
     protected $guarded = [];
     protected $with = ['user'];
-    protected $appends = ['date_created', 'body_html', 'status', 'is_best'];
+    protected $appends = ['date_created', 'body_html', 'status', 'is_best', 'vote_up_status', 'vote_down_status'];
     function question()
     {
         return $this->belongsTo(Question::class);
@@ -70,5 +70,15 @@ class Answer extends Model
     {
         return auth()->check() ? auth()->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
     }
+
+//    function getIsVoteUpAttribute()
+//    {
+//        return $this->isVoteUp();
+//    }
+//
+//    function getIsVoteDownAttribute()
+//    {
+//        return $this->isVoteDown();
+//    }
 
 }

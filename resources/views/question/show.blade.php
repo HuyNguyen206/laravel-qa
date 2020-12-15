@@ -15,8 +15,11 @@
                         @include('components._message-feedback')
                         <div class="media">
                             <div class="vote-info d-flex flex-column align-items-center mr-4">
-                            <x-vote voteUpTitle="This question is useful" voteDownTitle="This question is not useful"
-                            lowerModel="question" upperModel="Question" :model="$question"></x-vote>
+                                <vote type="question" vote-up-title="This question is useful" vote-down-title="This question is not useful" lower-model="question" upper-model="Question" :model="{{$question}}"></vote>
+
+{{--                            <x-vote voteUpTitle="This question is useful" voteDownTitle="This question is not useful"--}}
+{{--                            lowerModel="question" upperModel="Question" :model="$question"></x-vote>--}}
+
                                 <favorite :question="{{ $question  }}"></favorite>
 {{--                                @if(Auth::check())--}}
 {{--                                    <a href="" title="CLick to mark as favorite question (Click again to undo)"  onclick="event.preventDefault(); document.getElementById('question-{{$question->id}}').submit()" class="favorite {{$question->status_favorite}}"><i class="fas fa-star fa-2x"></i></a>--}}

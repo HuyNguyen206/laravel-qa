@@ -1,8 +1,10 @@
 <answer :answer="{{$answer}}" inline-template>
     <div class="media horizon-except-last">
         <div class="vote-info d-flex flex-column align-items-center mr-4">
-            <x-vote voteUpTitle="This answer is useful" voteDownTitle="This answer is not useful"
-                    lowerModel="answer" upperModel="Answer" :model="$answer"></x-vote>
+            <vote type="answer" vote-up-title="This answer is useful" vote-down-title="This answer is not useful" lower-model="answer" upper-model="Answer" :model="{{$answer}}"></vote>
+{{--            <x-vote voteUpTitle="This answer is useful" voteDownTitle="This answer is not useful"--}}
+{{--                    lowerModel="answer" upperModel="Answer" :model="$answer"></x-vote>--}}
+
             <best-answer :answer="{{$answer}}">
 
             </best-answer>

@@ -1,8 +1,11 @@
 
-
 <script>
+    import BestAnswer from './BestAnswer';
     export default {
         name: "answer",
+        components:{
+            BestAnswer
+        },
         props:{
             answer:Object
         },
