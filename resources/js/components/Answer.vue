@@ -20,7 +20,7 @@
                     <div class="col-4">
                         <div class="d-flex align-items-center">
                             <button v-if="authorize('modify', answer)" class="btn" @click="editing = true, body = body_html" > <i title="Edit question" class="far fa-edit fa-2x"></i></button>
-                            <button v-if="authorize('modify', answer)" class="btn delete-answer-button" @click="destroy">
+                            <button v-if="authorize('modify', answer)" class="btn delete-answer-button" @click="destroy()">
                                 <i class="fas fa-trash-alt fa-2x"></i>
                             </button>
                         </div>
@@ -63,13 +63,13 @@
                     body:this.body
                 })
                 .then(({data}) => {
-                    console.log(data)
+                    // console.log(data)
                     this.body_html = data.body_html;
                     this.editing = false;
                     this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
                 })
                 .catch( err => {
-                    console.log(err.response)
+                    // console.log(err.response)
                     this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
                     // alert(err.response.data.message)
                     // console.log(data.message)
@@ -95,9 +95,11 @@
                                     // console.log(this.$el)
                                     // console.log($(this.$el));
                                     // alert(data.message);
-                                    $(this.$el).fadeOut(500, () => {
-                                        this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
-                                    })
+
+                                    // $(this.$el).fadeOut(500, () => {
+                                    //     this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
+                                    // })
+                                    this.$emit('delete-answer')
                                 })
                                 .catch(err => {
                                     this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})

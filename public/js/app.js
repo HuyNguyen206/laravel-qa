@@ -12616,7 +12616,7 @@ __webpack_require__.r(__webpack_exports__);
         body: this.body
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
+        // console.log(data)
         _this.body_html = data.body_html;
         _this.editing = false;
 
@@ -12625,8 +12625,7 @@ __webpack_require__.r(__webpack_exports__);
           position: 'topRight'
         });
       })["catch"](function (err) {
-        console.log(err.response);
-
+        // console.log(err.response)
         _this.$toast.error(err.response.data.message, 'Error', {
           timeOut: 5000,
           position: 'topRight'
@@ -12649,18 +12648,17 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [['<button><b>YES</b></button>', function (instance, toast) {
           axios["delete"](_this2.endpoint).then(function (_ref2) {
             var data = _ref2.data;
+
             // console.log(data);
             // console.log(this);
             //
             // console.log(this.$el)
             // console.log($(this.$el));
             // alert(data.message);
-            $(_this2.$el).fadeOut(500, function () {
-              _this2.$toast.success(data.message, 'Success', {
-                timeOut: 5000,
-                position: 'topRight'
-              });
-            });
+            // $(this.$el).fadeOut(500, () => {
+            //     this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
+            // })
+            _this2.$emit('delete-answer');
           })["catch"](function (err) {
             _this2.$toast.error(err.response.data.message, 'Error', {
               timeOut: 5000,
@@ -12740,8 +12738,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   computed: {
     title: function title() {
-      console.log(this.question);
-      return this.question.answers_count + " " + (this.question.answers_count > 1 ? "answers" : "answer");
+      // console.log(this.question)
+      return this.count + " " + (this.count > 1 ? "answers" : "answer");
     }
   },
   data: function data() {
@@ -12749,14 +12747,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       answers: [],
       // id: this.question.id,
       url: "/questions/".concat(this.question.id, "/answers"),
-      hasMoreAnswer: true
+      hasMoreAnswer: true,
+      count: this.question.answers_count
     };
   },
   created: function created() {
     this.fetchAnswers();
   },
   methods: {
-    loadMore: function loadMore() {},
+    getDeletedAnswerId: function getDeletedAnswerId(index) {
+      console.log('receive answer index', index); // this.answers = this.answers.filter(ans => {
+      //     return ans.id != id;
+      // })
+
+      this.answers.splice(index, 1);
+      this.count = this.answers.length;
+    },
     fetchAnswers: function fetchAnswers() {
       var _this = this;
 
@@ -49478,7 +49484,11 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn delete-answer-button",
-                          on: { click: _vm.destroy }
+                          on: {
+                            click: function($event) {
+                              return _vm.destroy()
+                            }
+                          }
                         },
                         [_c("i", { staticClass: "fas fa-trash-alt fa-2x" })]
                       )
@@ -49544,8 +49554,16 @@ var render = function() {
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _vm._l(_vm.answers, function(answer) {
-              return _c("answer", { key: answer.id, attrs: { answer: answer } })
+            _vm._l(_vm.answers, function(answer, index) {
+              return _c("answer", {
+                key: answer.id,
+                attrs: { answer: answer },
+                on: {
+                  "delete-answer": function($event) {
+                    return _vm.getDeletedAnswerId(index)
+                  }
+                }
+              })
             })
           ],
           2

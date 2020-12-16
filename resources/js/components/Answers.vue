@@ -9,7 +9,7 @@
                         </h4>
                     </div>
                     <hr>
-                    <answer v-for="answer in answers" :answer="answer" :key="answer.id" ></answer>
+                    <answer v-for="(answer, index) in answers" @delete-answer="getDeletedAnswerId(index)" :answer="answer" :key="answer.id" ></answer>
                 </div>
                 <button class="btn btn-outline-secondary d-inline-block mx-auto mb-3" :disabled="!hasMoreAnswer" @click="fetchAnswers">Load more answer</button>
             </div>
@@ -28,8 +28,8 @@
         components: {Answer},
         computed: {
             title() {
-                console.log(this.question)
-                return this.question.answers_count + " " + (this.question.answers_count > 1 ? "answers" : "answer")
+                // console.log(this.question)
+                return this.count + " " + (this.count > 1 ? "answers" : "answer")
             }
         },
         data() {
@@ -37,15 +37,21 @@
                 answers: [],
                 // id: this.question.id,
                 url: `/questions/${this.question.id}/answers`,
-                hasMoreAnswer: true
+                hasMoreAnswer: true,
+                count: this.question.answers_count
             }
         },
         created() {
             this.fetchAnswers()
         },
         methods: {
-            loadMore(){
-
+            getDeletedAnswerId(index){
+                console.log('receive answer index', index)
+                // this.answers = this.answers.filter(ans => {
+                //     return ans.id != id;
+                // })
+                this.answers.splice(index, 1)
+                this.count =  this.answers.length
             },
             fetchAnswers() {
                 axios.get(this.url)
