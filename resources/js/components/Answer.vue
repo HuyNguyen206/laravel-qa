@@ -8,7 +8,7 @@
             <form action="" v-if="editing" @submit.prevent="update">
                 <div class="form-group">
                     <label for="answer-body">Content</label>
-                    <textarea required v-model="body" name="body" id="answer-body" rows="5" class=""></textarea>
+                    <textarea required v-model="body" name="body" id="answer-body" rows="5" class="form-control"></textarea>
                 </div>
 
                 <button class="btn btn-outline-primary" type="submit" :disabled="body.length == 0">Update</button>
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="d-flex align-items-center">
-                            <a v-if="authorize('modify', answer)" @click.prevent="editing = true, body = body_html"> <i title="Edit question" class="far fa-edit fa-2x"></i></a>
+                            <button v-if="authorize('modify', answer)" class="btn" @click="editing = true, body = body_html" > <i title="Edit question" class="far fa-edit fa-2x"></i></button>
                             <button v-if="authorize('modify', answer)" class="btn delete-answer-button" @click="destroy">
                                 <i class="fas fa-trash-alt fa-2x"></i>
                             </button>

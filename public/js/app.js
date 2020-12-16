@@ -12697,6 +12697,18 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Answer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Answer */ "./resources/js/components/Answer.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 //
 //
 //
@@ -12736,7 +12748,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       answers: [],
       // id: this.question.id,
-      url: "/questions/".concat(this.question.id, "/answers")
+      url: "/questions/".concat(this.question.id, "/answers"),
+      hasMoreAnswer: true
     };
   },
   created: function created() {
@@ -12748,9 +12761,15 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get(this.url).then(function (_ref) {
+        var _this$answers;
+
         var data = _ref.data;
+
         // console.log(data)
-        _this.answers = data.data;
+        (_this$answers = _this.answers).push.apply(_this$answers, _toConsumableArray(data.data));
+
+        _this.hasMoreAnswer = data.next_page_url != null;
+        _this.url = data.next_page_url;
       })["catch"](function (err) {
         _this.$toast.error(err.response.data.message, 'Error', {
           timeOut: 5000
@@ -49385,6 +49404,7 @@ var render = function() {
                       expression: "body"
                     }
                   ],
+                  staticClass: "form-control",
                   attrs: {
                     required: "",
                     name: "body",
@@ -49435,11 +49455,11 @@ var render = function() {
                 _c("div", { staticClass: "d-flex align-items-center" }, [
                   _vm.authorize("modify", _vm.answer)
                     ? _c(
-                        "a",
+                        "button",
                         {
+                          staticClass: "btn",
                           on: {
                             click: function($event) {
-                              $event.preventDefault()
                               ;(_vm.editing = true), (_vm.body = _vm.body_html)
                             }
                           }
@@ -49536,7 +49556,8 @@ var render = function() {
           {
             staticClass:
               "btn btn-outline-secondary d-inline-block mx-auto mb-3",
-            on: { click: _vm.loadMore }
+            attrs: { disabled: !_vm.hasMoreAnswer },
+            on: { click: _vm.fetchAnswers }
           },
           [_vm._v("Load more answer")]
         )
@@ -62175,7 +62196,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************************************************!*\
   !*** ./resources/js/components/Answer.vue?vue&type=template&id=98a0422e&scoped=true& ***!
   \***************************************************************************************/
-/*! no static exports found */
+/*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

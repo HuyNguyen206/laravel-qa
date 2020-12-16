@@ -11,7 +11,7 @@
                     <hr>
                     <answer v-for="answer in answers" :answer="answer" :key="answer.id" ></answer>
                 </div>
-                <button class="btn btn-outline-secondary d-inline-block mx-auto mb-3" @click="loadMore">Load more answer</button>
+                <button class="btn btn-outline-secondary d-inline-block mx-auto mb-3" :disabled="!hasMoreAnswer" @click="fetchAnswers">Load more answer</button>
             </div>
         </div>
 
@@ -36,7 +36,8 @@
             return {
                 answers: [],
                 // id: this.question.id,
-                url: `/questions/${this.question.id}/answers`
+                url: `/questions/${this.question.id}/answers`,
+                hasMoreAnswer: true
             }
         },
         created() {
@@ -50,7 +51,9 @@
                 axios.get(this.url)
                     .then(({data}) => {
                         // console.log(data)
-                        this.answers = data.data
+                        this.answers.push(...data.data)
+                        this.hasMoreAnswer = data.next_page_url != null
+                        this.url = data.next_page_url
                     })
                     .catch(err => {
                         this.$toast.error(err.response.data.message, 'Error', {timeOut: 5000})
