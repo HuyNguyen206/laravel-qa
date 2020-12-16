@@ -15,6 +15,7 @@
 </template>
 
 <script>
+    import EventBus from './../EventBus'
     export default {
         name: "BestAnswer",
         props: {
@@ -34,6 +35,12 @@
                 return this.authorize('acceptBestAnswer', this.answer)
             }
         },
+        created() {
+            EventBus.$on('mark-best-answer', id => {
+                this.isBest = this.id === id;
+                this.status = this.isBest ? 'vote-accepted' : ''
+            })
+        },
         methods:{
             markBestAnswer()
             {
@@ -41,6 +48,7 @@
                 .then(({data}) => {
                     if(data.code == 200)
                     {
+                        EventBus.$emit('mark-best-answer', this.id)
                         this.status = data.status
                     }
                     else

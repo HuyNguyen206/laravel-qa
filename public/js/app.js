@@ -12796,6 +12796,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../EventBus */ "./resources/js/EventBus.js");
 //
 //
 //
@@ -12812,6 +12813,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BestAnswer",
   props: {
@@ -12830,22 +12832,31 @@ __webpack_require__.r(__webpack_exports__);
       return this.authorize('acceptBestAnswer', this.answer);
     }
   },
+  created: function created() {
+    var _this = this;
+
+    _EventBus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('mark-best-answer', function (id) {
+      _this.isBest = _this.id === id;
+      _this.status = _this.isBest ? 'vote-accepted' : '';
+    });
+  },
   methods: {
     markBestAnswer: function markBestAnswer() {
-      var _this = this;
+      var _this2 = this;
 
       axios.post("/answer/".concat(this.id, "/accept")).then(function (_ref) {
         var data = _ref.data;
 
         if (data.code == 200) {
-          _this.status = data.status;
+          _EventBus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('mark-best-answer', _this2.id);
+          _this2.status = data.status;
         } else {
-          _this.$toast.error(data.message, 'Error', {
+          _this2.$toast.error(data.message, 'Error', {
             timeOut: 5000
           });
         }
       })["catch"](function ($err) {
-        _this.$toast.error($err.response.data.message, 'Error', {
+        _this2.$toast.error($err.response.data.message, 'Error', {
           timeOut: 5000
         });
       });
@@ -61976,6 +61987,23 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+
+/***/ "./resources/js/EventBus.js":
+/*!**********************************!*\
+  !*** ./resources/js/EventBus.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
+/* harmony default export */ __webpack_exports__["default"] = (EventBus);
 
 /***/ }),
 
