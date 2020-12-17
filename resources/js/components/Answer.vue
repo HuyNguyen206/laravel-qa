@@ -99,7 +99,14 @@
                                     // $(this.$el).fadeOut(500, () => {
                                     //     this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
                                     // })
-                                    this.$emit('delete-answer')
+                                    if(data.code == 200)
+                                    {
+                                        this.$emit('delete-answer')
+                                    }
+                                     else
+                                    {
+                                        this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
+                                    }
                                 })
                                 .catch(err => {
                                     this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})

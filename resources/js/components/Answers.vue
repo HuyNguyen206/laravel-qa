@@ -53,6 +53,7 @@
         methods: {
             addNewAnswer(answer)
             {
+                console.log('new answer', answer)
                 this.answers.push(answer)
                 this.newAnswerId.push(answer.id)
                 this.count++
@@ -64,7 +65,11 @@
                 //     return ans.id != id;
                 // })
                 this.answers.splice(index, 1)
-                this.count =  this.answers.length
+                this.count--
+                this.url = `/questions/${this.question.id}/answers`;
+                this.answers = []
+                this.newAnswerId = []
+                this.fetchAnswers()
             },
             fetchAnswers() {
                 axios.get(this.url)

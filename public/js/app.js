@@ -12658,7 +12658,14 @@ __webpack_require__.r(__webpack_exports__);
             // $(this.$el).fadeOut(500, () => {
             //     this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
             // })
-            _this2.$emit('delete-answer');
+            if (data.code == 200) {
+              _this2.$emit('delete-answer');
+            } else {
+              _this2.$toast.error(err.response.data.message, 'Error', {
+                timeOut: 5000,
+                position: 'topRight'
+              });
+            }
           })["catch"](function (err) {
             _this2.$toast.error(err.response.data.message, 'Error', {
               timeOut: 5000,
@@ -12745,6 +12752,8 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
 
         if (data.code == 200) {
+          console.log('input data pass', data.answer);
+
           _this.$emit('add-new-answer', data.answer);
 
           _this.body = '';
@@ -12847,6 +12856,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   methods: {
     addNewAnswer: function addNewAnswer(answer) {
+      console.log('new answer', answer);
       this.answers.push(answer);
       this.newAnswerId.push(answer.id);
       this.count++;
@@ -12857,7 +12867,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // })
 
       this.answers.splice(index, 1);
-      this.count = this.answers.length;
+      this.count--;
+      this.url = "/questions/".concat(this.question.id, "/answers");
+      this.answers = [];
+      this.newAnswerId = [];
+      this.fetchAnswers();
     },
     fetchAnswers: function fetchAnswers() {
       var _this = this;

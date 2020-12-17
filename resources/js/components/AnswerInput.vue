@@ -46,6 +46,7 @@
                 .then(({data}) => {
                     if(data.code == 200)
                     {
+                        console.log('input data pass', data.answer)
                         this.$emit('add-new-answer', data.answer)
                         this.body = ''
                         this.$toast.success(data.message, 'Success', {timeOut:5000})
