@@ -55,7 +55,7 @@
             <answers :question="{{$question}}"></answers>
 {{--            @include('question.component._answers')--}}
         @endif
-        @include('question.component._answers-input')
+{{--        @include('question.component._answers-input')--}}
     </div>
 @endsection
 

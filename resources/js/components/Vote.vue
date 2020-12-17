@@ -38,7 +38,7 @@
                 // canVoteDown: "voteDown".this.upperModel;
                 canVoteUp: this.authorize('canVoteUp',this.model),
                 canVoteDown:  this.authorize('canVoteDown', this.model),
-                voteCount: this.model.hasOwnProperty('votes') ? this.model.votes : this.model.votes_count,
+                voteCount: (this.model.hasOwnProperty('votes') ? this.model.votes : this.model.votes_count) || 0,
                 voteUpStatus:this.model.vote_up_status,
                 voteDownStatus:this.model.vote_down_status
             }

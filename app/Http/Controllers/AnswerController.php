@@ -29,12 +29,29 @@ class AnswerController extends Controller
             'body' => 'required'
         ]);
         try {
-            $question->answers()->create(['body' => $request->body, 'user_id' => \Auth::id()]);
-            return redirect()->back()->with('success', 'Your answer has been submitted');
+            $answer = $question->answers()->create(['body' => $request->body, 'user_id' => \Auth::id()]);
+            $answer->load('user');
+            if($request->expectsJson())
+            {
+                return response()->json(['code' => 200, 'message' => 'Your answer has been submitted', 'answer' => $answer], 200);
+            }
+            else
+            {
+                return redirect()->back()->with('success', 'Your answer has been submitted');
+            }
+
         }
         catch (\Throwable $ex)
         {
-            return redirect()->back()->with('fail', $ex->getMessage());
+            if($request->expectsJson())
+            {
+                return response()->json(['code' => 500, 'message' => $ex->getMessage()], 500);
+            }
+            else
+            {
+                return redirect()->back()->with('fail', $ex->getMessage());
+            }
+
         }
 
     }
