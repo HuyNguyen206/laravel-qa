@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row justify-content-center mt-2" v-cloak>
+        <div v-if="count> 0" class="row justify-content-center mt-2" v-cloak>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -10,7 +10,7 @@
                             </h4>
                         </div>
                         <hr>
-                        <answer v-for="(answer, index) in answers" @delete-answer="getDeletedAnswerId(index)" :answer="answer" :key="answer.id" ></answer>
+                        <answer  v-for="(answer, index) in answers" @delete-answer="getDeletedAnswerId(index)" :answer="answer" :key="answer.id" ></answer>
                     </div>
                     <button class="btn btn-outline-secondary d-inline-block mx-auto mb-3" :disabled="!hasMoreAnswer" @click="fetchAnswers">Load more answer</button>
                 </div>
@@ -26,10 +26,12 @@
 
 <script>
     import Answer from './Answer';
+    import AnswerInput from "./AnswerInput";
+    import EventBus from "../EventBus";
     export default {
         name: "Answers",
         props: ['question'],
-        components: {Answer},
+        components: {Answer, AnswerInput},
         computed: {
             title() {
                 // console.log(this.question)
@@ -57,6 +59,7 @@
                 this.answers.push(answer)
                 this.newAnswerId.push(answer.id)
                 this.count++
+                EventBus.$emit('sync-answer-count',  this.count)
 
             },
             getDeletedAnswerId(index){
@@ -70,6 +73,8 @@
                 this.answers = []
                 this.newAnswerId = []
                 this.fetchAnswers()
+                EventBus.$emit('sync-answer-count',  this.count)
+
             },
             fetchAnswers() {
                 axios.get(this.url)

@@ -99,11 +99,29 @@ class QuestionController extends Controller
             //
             $this->authorize('update', $question);
             $question->update($request->only('title', 'body'));
-            return redirect()->route('questions.index')->with('success', 'Your question has been updated');
+            if($request->expectsJson())
+            {
+                return response()->json(
+                    ['code'=>200, 'message' => 'Your question has been updated',
+                        'body_html' => $question->body_html], 200);
+            }
+            else
+            {
+                return redirect()->route('questions.index')->with('success', 'Your question has been updated');
+            }
+
         }
         catch (\Throwable $ex)
         {
-            return redirect()->route('questions.index')->with('fail', $ex->getMessage());
+            if($request->expectsJson())
+            {
+                return response()->json(['code'=>500, 'message' => $ex->getMessage()], 500);
+            }
+            else
+            {
+                return redirect()->route('questions.index')->with('fail', $ex->getMessage());
+            }
+
         }
 
     }
@@ -122,11 +140,27 @@ class QuestionController extends Controller
             //
             $this->authorize('delete', $question);
             $question->delete();
-            return redirect()->back()->with('success', 'Your question has been deleted');
+            if(\request()->expectsJson())
+            {
+                return response()->json(['code' => 200, 'message' => 'Your question has been deleted'], 200);
+            }
+            else
+            {
+                return redirect()->back()->with('success', 'Your question has been deleted');
+            }
+
         }
         catch (\Throwable $ex)
         {
-            return redirect()->back()->with('fail', $ex->getMessage());
+            if(\request()->expectsJson())
+            {
+                return response()->json(['code' => 200, 'message' => $ex->getMessage()], 200);
+            }
+            else
+            {
+                return redirect()->back()->with('fail', $ex->getMessage());
+            }
+
         }
 
 

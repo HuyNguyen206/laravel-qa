@@ -39,10 +39,12 @@
 </template>
 <script>
     import BestAnswer from './BestAnswer';
+    import Vote from "./Vote";
+    import UserInfo from "./UserInfo";
     export default {
         name: "answer",
         components:{
-            BestAnswer
+            BestAnswer, Vote, UserInfo
         },
         props:{
             answer:Object

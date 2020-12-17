@@ -12,7 +12,7 @@ class Question extends Model
     use SoftDeletes, VotableTrait;
     protected $guarded = [];
     protected $with = ['user'];
-    protected $appends = ['date_created', 'favorite_counts', 'status_favorite', 'vote_up_status', 'vote_down_status'];
+    protected $appends = ['date_created', 'favorite_counts', 'status_favorite', 'vote_up_status', 'vote_down_status', 'body_html'];
     function user()
     {
         return $this->belongsTo(User::class, 'user_id');
