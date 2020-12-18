@@ -6,7 +6,10 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
+body
+{
+    background: #f8fafc;
+}
 .pagination {
     justify-content: center;
     margin-top: 20px;

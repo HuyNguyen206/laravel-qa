@@ -22,7 +22,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="answer-body">Content</label>
-                                    <textarea required v-model="body" name="body" id="answer-body" rows="5" class="form-control"></textarea>
+                                    <m-editor :body="body">
+                                        <textarea required v-model="body" name="body" id="answer-body" rows="5" class="form-control"></textarea>
+                                    </m-editor>
                                 </div>
 
                                 <button class="btn btn-outline-primary" type="submit" :disabled="body.length == 0 || title.length === 0">Update</button>
@@ -59,11 +61,12 @@
     import Vote from "./Vote";
     import UserInfo from "./UserInfo";
     import Favorite from "./Favorite";
+    import MEditor from "./MEditor";
     export default {
         name: "Question",
         props:['question'],
         mixins: [Modification],
-        components:{ Vote, UserInfo, Favorite },
+        components:{ Vote, UserInfo, Favorite, MEditor },
         data(){
             return {
                 originTitle: '',
