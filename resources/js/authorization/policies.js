@@ -7,7 +7,6 @@ export default {
         }
         else
         {
-            console.log('modify')
             return user.id == model.user_id
         }
 

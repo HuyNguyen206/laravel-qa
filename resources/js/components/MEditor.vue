@@ -21,15 +21,28 @@
 </template>
 
 <script>
-    import MarkDownIt from 'markdown-it'
-    const markdown = new MarkDownIt()
+    // import MarkDownIt from 'markdown-it'
+    import AutoSize from 'autosize'
+    // import prism from 'markdown-it-prism'
+    // const markdown = new MarkDownIt()
+    // markdown.use(prism)
+    import modification from "../mixins/modification";
     export default {
         name: "MEditor",
         props:['body'],
+        mixins:[modification],
         computed:{
             preview(){
-                console.log(this.body)
-                return markdown.render(this.body)
+                return this.renderDataMD(this.body)
+            }
+        },
+        mounted() {
+            AutoSize(document.querySelector('textarea'))
+        },
+        watch:{
+            body:function(){
+                AutoSize(document.querySelector('textarea'))
+                console.log('Watch body')
             }
         }
     }

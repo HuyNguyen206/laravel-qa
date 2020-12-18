@@ -44,8 +44,6 @@
                                     </button>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                     <user-info :model="question" label="Asked by"></user-info>
@@ -62,6 +60,7 @@
     import UserInfo from "./UserInfo";
     import Favorite from "./Favorite";
     import MEditor from "./MEditor";
+
     export default {
         name: "Question",
         props:['question'],
@@ -71,10 +70,10 @@
             return {
                 originTitle: '',
                 body: this.question.body,
-                body_html:this.question.body_html,
                 title: this.question.title,
                 endpoint: `/questions/${this.question.id}`,
                 originQuestion: {...this.question},
+                body_html: this.question.body_html
                 // answer_counts: this.question.answers_count
             }
         },
@@ -114,6 +113,7 @@
                     })
                     .catch( err => {
                         // console.log(err.response)
+                        console.log(err)
                         this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
                         // alert(err.response.data.message)
                         // console.log(data.message)
