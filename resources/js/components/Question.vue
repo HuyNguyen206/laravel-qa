@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="answer-body">Content</label>
-                                    <m-editor :body="body">
+                                    <m-editor :body="body" :nameIndex="uniqueName">
                                         <textarea required v-model="body" name="body" id="answer-body" rows="5" class="form-control"></textarea>
                                     </m-editor>
                                 </div>
@@ -71,7 +71,7 @@
                 originTitle: '',
                 body: this.question.body,
                 title: this.question.title,
-                endpoint: `/questions/${this.question.id}`,
+                id: this.question.id,
                 originQuestion: {...this.question},
                 body_html: this.question.body_html
                 // answer_counts: this.question.answers_count
@@ -79,6 +79,10 @@
         },
         //Computed function only recalculate with depending data property
         computed:{
+            uniqueName()
+            {
+                return `question-${this.id}`
+            },
               canUpdate(){
                   // return this.isSignIn && window.Auth.user.id === this.question.user_id
                   return this.authorize('modify', this.originQuestion)
@@ -86,7 +90,10 @@
               canDelete(){
                   // return this.isSignIn && window.Auth.user.id === this.question.user_id &&  this.answer_counts === 0
                   return this.authorize('deleteQuestion', this.originQuestion)
-              }
+              },
+                endpoint(){
+                    return `/questions/${this.id}`
+                }
         },
         created() {
             EventBus.$on('sync-answer-count', (count) => {

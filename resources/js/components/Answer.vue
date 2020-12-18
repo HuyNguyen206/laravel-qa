@@ -8,7 +8,9 @@
             <form action="" v-if="editing" @submit.prevent="update">
                 <div class="form-group">
                     <label for="answer-body">Content</label>
-                    <textarea required v-model="body" name="body" id="answer-body" rows="5" class="form-control"></textarea>
+                    <m-editor :body="body" :nameIndex="uniqueName">
+                        <textarea required v-model="body" name="body" id="answer-body" rows="5" class="form-control"></textarea>
+                    </m-editor>
                 </div>
 
                 <button class="btn btn-outline-primary" type="submit" :disabled="body.length == 0">Update</button>
@@ -39,17 +41,16 @@
 </template>
 <script>
     import BestAnswer from './BestAnswer';
+    import Modification from './../mixins/modification'
     import Vote from "./Vote";
     import UserInfo from "./UserInfo";
-    import Modification from './../mixins/modification'
+    import MEditor from "./MEditor";
     export default {
         name: "answer",
         components:{
-            BestAnswer, Vote, UserInfo
+            BestAnswer, Vote, UserInfo, MEditor
         },
-        props:{
-            answer:Object
-        },
+        props:['answer'],
         mixins: [Modification],
         data()
         {
@@ -59,6 +60,9 @@
                 questionId: this.answer.question_id,
                 id: this.answer.id
             }
+        },
+        created() {
+            this.body_html = this.renderDataMD(this.body)
         },
         methods:{
             update(){
@@ -82,6 +86,10 @@
             }
         },
         computed:{
+            uniqueName()
+            {
+                return `answer-${this.id}`
+            },
             endpoint(){
                 return `/questions/${this.questionId}/answers/${this.id} `
             }

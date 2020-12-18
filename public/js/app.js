@@ -12844,9 +12844,10 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BestAnswer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BestAnswer */ "./resources/js/components/BestAnswer.vue");
-/* harmony import */ var _Vote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Vote */ "./resources/js/components/Vote.vue");
-/* harmony import */ var _UserInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./UserInfo */ "./resources/js/components/UserInfo.vue");
-/* harmony import */ var _mixins_modification__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../mixins/modification */ "./resources/js/mixins/modification.js");
+/* harmony import */ var _mixins_modification__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../mixins/modification */ "./resources/js/mixins/modification.js");
+/* harmony import */ var _Vote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Vote */ "./resources/js/components/Vote.vue");
+/* harmony import */ var _UserInfo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UserInfo */ "./resources/js/components/UserInfo.vue");
+/* harmony import */ var _MEditor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MEditor */ "./resources/js/components/MEditor.vue");
 //
 //
 //
@@ -12886,6 +12887,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -12894,13 +12898,12 @@ __webpack_require__.r(__webpack_exports__);
   name: "answer",
   components: {
     BestAnswer: _BestAnswer__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Vote: _Vote__WEBPACK_IMPORTED_MODULE_1__["default"],
-    UserInfo: _UserInfo__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Vote: _Vote__WEBPACK_IMPORTED_MODULE_2__["default"],
+    UserInfo: _UserInfo__WEBPACK_IMPORTED_MODULE_3__["default"],
+    MEditor: _MEditor__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: {
-    answer: Object
-  },
-  mixins: [_mixins_modification__WEBPACK_IMPORTED_MODULE_3__["default"]],
+  props: ['answer'],
+  mixins: [_mixins_modification__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
       body: this.answer.body,
@@ -12908,6 +12911,9 @@ __webpack_require__.r(__webpack_exports__);
       questionId: this.answer.question_id,
       id: this.answer.id
     };
+  },
+  created: function created() {
+    this.body_html = this.renderDataMD(this.body);
   },
   methods: {
     update: function update() {
@@ -12935,6 +12941,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    uniqueName: function uniqueName() {
+      return "answer-".concat(this.id);
+    },
     endpoint: function endpoint() {
       return "/questions/".concat(this.questionId, "/answers/").concat(this.id, " ");
     }
@@ -13391,12 +13400,34 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MEditor",
-  props: ['body'],
+  props: ['body', 'nameIndex'],
   mixins: [_mixins_modification__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  methods: {
+    tabId: function tabId(tabName) {
+      var hash = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      return "".concat(hash).concat(tabName).concat(this.nameIndex);
+    }
+  },
   computed: {
     preview: function preview() {
       return this.renderDataMD(this.body);
-    }
+    } // writeHref()
+    // {
+    //     return `#write-${this.nameIndex}`
+    // },
+    // previewHref()
+    // {
+    //     return `#preview-${this.nameIndex}`
+    // },
+    // writeId()
+    // {
+    //     return `write-${this.nameIndex}`
+    // },
+    // previewId()
+    // {
+    //     return `preview-${this.nameIndex}`
+    // }
+
   },
   mounted: function mounted() {
     autosize__WEBPACK_IMPORTED_MODULE_0___default()(document.querySelector('textarea'));
@@ -13508,7 +13539,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       originTitle: '',
       body: this.question.body,
       title: this.question.title,
-      endpoint: "/questions/".concat(this.question.id),
+      id: this.question.id,
       originQuestion: _objectSpread({}, this.question),
       body_html: this.question.body_html // answer_counts: this.question.answers_count
 
@@ -13516,6 +13547,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   //Computed function only recalculate with depending data property
   computed: {
+    uniqueName: function uniqueName() {
+      return "question-".concat(this.id);
+    },
     canUpdate: function canUpdate() {
       // return this.isSignIn && window.Auth.user.id === this.question.user_id
       return this.authorize('modify', this.originQuestion);
@@ -13523,6 +13557,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     canDelete: function canDelete() {
       // return this.isSignIn && window.Auth.user.id === this.question.user_id &&  this.answer_counts === 0
       return this.authorize('deleteQuestion', this.originQuestion);
+    },
+    endpoint: function endpoint() {
+      return "/questions/".concat(this.id);
     }
   },
   created: function created() {
@@ -13624,6 +13661,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -67413,38 +67451,49 @@ var render = function() {
               }
             },
             [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "answer-body" } }, [
-                  _vm._v("Content")
-                ]),
-                _vm._v(" "),
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.body,
-                      expression: "body"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    required: "",
-                    name: "body",
-                    id: "answer-body",
-                    rows: "5"
-                  },
-                  domProps: { value: _vm.body },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.body = $event.target.value
-                    }
-                  }
-                })
-              ]),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", { attrs: { for: "answer-body" } }, [
+                    _vm._v("Content")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "m-editor",
+                    { attrs: { body: _vm.body, nameIndex: _vm.uniqueName } },
+                    [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.body,
+                            expression: "body"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          required: "",
+                          name: "body",
+                          id: "answer-body",
+                          rows: "5"
+                        },
+                        domProps: { value: _vm.body },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.body = $event.target.value
+                          }
+                        }
+                      })
+                    ]
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _c(
                 "button",
@@ -67843,40 +67892,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body tab-content" }, [
-      _c(
-        "div",
-        {
-          staticClass: "tab-pane active",
-          attrs: { id: "write", role: "tabpanel" }
-        },
-        [_vm._t("default")],
-        2
-      ),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "tab-pane",
-        attrs: { id: "preview", role: "tabpanel" },
-        domProps: { innerHTML: _vm._s(_vm.preview) }
-      })
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    _c("div", { staticClass: "card-header" }, [
       _c("ul", { staticClass: "nav nav-tabs card-header-tabs" }, [
         _c("li", { staticClass: "nav-item" }, [
           _c(
             "a",
             {
               staticClass: "nav-link active",
-              attrs: { "data-toggle": "tab", href: "#write" }
+              attrs: { "data-toggle": "tab", href: _vm.tabId("write", "#") }
             },
             [_vm._v("Write")]
           )
@@ -67887,15 +67910,34 @@ var staticRenderFns = [
             "a",
             {
               staticClass: "nav-link",
-              attrs: { "data-toggle": "tab", href: "#preview" }
+              attrs: { "data-toggle": "tab", href: _vm.tabId("preview", "#") }
             },
             [_vm._v("Preview")]
           )
         ])
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body tab-content" }, [
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane active",
+          attrs: { id: _vm.tabId("write"), role: "tabpanel" }
+        },
+        [_vm._t("default")],
+        2
+      ),
+      _vm._v(" "),
+      _c("div", {
+        staticClass: "tab-pane",
+        attrs: { id: _vm.tabId("preview"), role: "tabpanel" },
+        domProps: { innerHTML: _vm._s(_vm.preview) }
+      })
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -68000,34 +68042,43 @@ var render = function() {
                               _vm._v("Content")
                             ]),
                             _vm._v(" "),
-                            _c("m-editor", { attrs: { body: _vm.body } }, [
-                              _c("textarea", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.body,
-                                    expression: "body"
-                                  }
-                                ],
-                                staticClass: "form-control",
+                            _c(
+                              "m-editor",
+                              {
                                 attrs: {
-                                  required: "",
-                                  name: "body",
-                                  id: "answer-body",
-                                  rows: "5"
-                                },
-                                domProps: { value: _vm.body },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.body = $event.target.value
-                                  }
+                                  body: _vm.body,
+                                  nameIndex: _vm.uniqueName
                                 }
-                              })
-                            ])
+                              },
+                              [
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.body,
+                                      expression: "body"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    required: "",
+                                    name: "body",
+                                    id: "answer-body",
+                                    rows: "5"
+                                  },
+                                  domProps: { value: _vm.body },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.body = $event.target.value
+                                    }
+                                  }
+                                })
+                              ]
+                            )
                           ],
                           1
                         ),
