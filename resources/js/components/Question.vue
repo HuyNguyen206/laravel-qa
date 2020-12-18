@@ -26,7 +26,7 @@
                                 </div>
 
                                 <button class="btn btn-outline-primary" type="submit" :disabled="body.length == 0 || title.length === 0">Update</button>
-                                <button class="btn btn-outline-primary" type="button" @click="editing = false, body = originBody, title = originTitle">Cancel</button>
+                                <button class="btn btn-outline-primary" type="button" @click="cancel">Cancel</button>
                             </form>
                             <div v-else>
                                 <h2>
@@ -36,7 +36,7 @@
                                 <div v-html="body_html">
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <button v-if="canUpdate" class="btn" @click="editing = true, originBody = body, originTitle = title" > <i title="Edit question" class="far fa-edit fa-2x"></i></button>
+                                    <button v-if="canUpdate" class="btn" @click="edit" > <i title="Edit question" class="far fa-edit fa-2x"></i></button>
                                     <button v-if="canDelete" class="btn delete-answer-button" @click="destroy()">
                                         <i class="fas fa-trash-alt fa-2x"></i>
                                     </button>
@@ -55,17 +55,17 @@
 
 <script>
     import EventBus from "../EventBus";
+    import Modification from './../mixins/modification'
     import Vote from "./Vote";
     import UserInfo from "./UserInfo";
     import Favorite from "./Favorite";
     export default {
         name: "Question",
         props:['question'],
+        mixins: [Modification],
         components:{ Vote, UserInfo, Favorite },
         data(){
             return {
-                editing:false,
-                originBody: '',
                 originTitle: '',
                 body: this.question.body,
                 body_html:this.question.body_html,
@@ -92,6 +92,14 @@
             })
         },
         methods:{
+            setOriginTitle()
+            {
+                    this.originTitle = this.title
+            },
+            getOriginTitle()
+            {
+                    this.title = this.originTitle
+            },
             update(){
                 axios.put(this.endpoint, {
                     title: this.title,
@@ -99,9 +107,7 @@
                 })
                     .then(({data}) => {
                         // console.log(data)
-                        this.body_html = data.body_html;
-                        this.editing = false;
-                        this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
+                      this.successCase(data)
                     })
                     .catch( err => {
                         // console.log(err.response)
@@ -110,49 +116,12 @@
                         // console.log(data.message)
                     })
             },
-            destroy()
-            {
-                this.$toast.question('Are you sure?', 'Delete', {
-                    timeout: 20000,
-                    close: false,
-                    overlay: true,
-                    displayMode: 'once',
-                    id: 'question',
-                    zindex: 999,
-                    position: 'center',
-                    buttons: [
-                        ['<button><b>YES</b></button>', (instance, toast) => {
-                            axios.delete(this.endpoint)
-                                .then(({data}) => {
-                                    if(data.code == 200)
-                                    {
-                                        this.$toast.success(data.message, 'Success', { timeOut:3000, position:'topRight'})
-                                        setTimeout(() => {
-                                            window.location.href='/questions'
-                                        },3000)
-                                    }
-                                    else
-                                    {
-                                        this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
-                                    }
-                                })
-                                .catch(err => {
-                                    this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
-                                })
-                            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-
-                        }, true],
-                        ['<button>NO</button>', function (instance, toast) {
-
-                            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-
-                        }],
-                    ],
-                });
-
-
-
-            }
+            destroySuccess(data){
+                this.$toast.success(data.message, 'Success', { timeOut:3000, position:'topRight'})
+                setTimeout(() => {
+                    window.location.href='/questions'
+                },3000)
+            },
         },
     }
 </script>

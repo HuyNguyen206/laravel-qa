@@ -12553,6 +12553,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BestAnswer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BestAnswer */ "./resources/js/components/BestAnswer.vue");
 /* harmony import */ var _Vote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Vote */ "./resources/js/components/Vote.vue");
 /* harmony import */ var _UserInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./UserInfo */ "./resources/js/components/UserInfo.vue");
+/* harmony import */ var _mixins_modification__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../mixins/modification */ "./resources/js/mixins/modification.js");
 //
 //
 //
@@ -12592,6 +12593,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -12605,9 +12607,9 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     answer: Object
   },
+  mixins: [_mixins_modification__WEBPACK_IMPORTED_MODULE_3__["default"]],
   data: function data() {
     return {
-      editing: false,
       body: this.answer.body,
       body_html: this.answer.body_html,
       questionId: this.answer.question_id,
@@ -12622,14 +12624,9 @@ __webpack_require__.r(__webpack_exports__);
         body: this.body
       }).then(function (_ref) {
         var data = _ref.data;
-        // console.log(data)
-        _this.body_html = data.body_html;
-        _this.editing = false;
 
-        _this.$toast.success(data.message, 'Success', {
-          timeOut: 5000,
-          position: 'topRight'
-        });
+        // console.log(data)
+        _this.successCase(data);
       })["catch"](function (err) {
         // console.log(err.response)
         _this.$toast.error(err.response.data.message, 'Error', {
@@ -12640,53 +12637,8 @@ __webpack_require__.r(__webpack_exports__);
 
       });
     },
-    destroy: function destroy() {
-      var _this2 = this;
-
-      this.$toast.question('Are you sure?', 'Delete', {
-        timeout: 20000,
-        close: false,
-        overlay: true,
-        displayMode: 'once',
-        id: 'question',
-        zindex: 999,
-        position: 'center',
-        buttons: [['<button><b>YES</b></button>', function (instance, toast) {
-          axios["delete"](_this2.endpoint).then(function (_ref2) {
-            var data = _ref2.data;
-
-            // console.log(data);
-            // console.log(this);
-            //
-            // console.log(this.$el)
-            // console.log($(this.$el));
-            // alert(data.message);
-            // $(this.$el).fadeOut(500, () => {
-            //     this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
-            // })
-            if (data.code == 200) {
-              _this2.$emit('delete-answer');
-            } else {
-              _this2.$toast.error(err.response.data.message, 'Error', {
-                timeOut: 5000,
-                position: 'topRight'
-              });
-            }
-          })["catch"](function (err) {
-            _this2.$toast.error(err.response.data.message, 'Error', {
-              timeOut: 5000,
-              position: 'topRight'
-            });
-          });
-          instance.hide({
-            transitionOut: 'fadeOut'
-          }, toast, 'button');
-        }, true], ['<button>NO</button>', function (instance, toast) {
-          instance.hide({
-            transitionOut: 'fadeOut'
-          }, toast, 'button');
-        }]]
-      });
+    destroySuccess: function destroySuccess() {
+      this.$emit('delete-answer');
     }
   },
   computed: {
@@ -13114,9 +13066,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EventBus */ "./resources/js/EventBus.js");
-/* harmony import */ var _Vote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Vote */ "./resources/js/components/Vote.vue");
-/* harmony import */ var _UserInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./UserInfo */ "./resources/js/components/UserInfo.vue");
-/* harmony import */ var _Favorite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Favorite */ "./resources/js/components/Favorite.vue");
+/* harmony import */ var _mixins_modification__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../mixins/modification */ "./resources/js/mixins/modification.js");
+/* harmony import */ var _Vote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Vote */ "./resources/js/components/Vote.vue");
+/* harmony import */ var _UserInfo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UserInfo */ "./resources/js/components/UserInfo.vue");
+/* harmony import */ var _Favorite__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Favorite */ "./resources/js/components/Favorite.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -13182,18 +13135,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Question",
   props: ['question'],
+  mixins: [_mixins_modification__WEBPACK_IMPORTED_MODULE_1__["default"]],
   components: {
-    Vote: _Vote__WEBPACK_IMPORTED_MODULE_1__["default"],
-    UserInfo: _UserInfo__WEBPACK_IMPORTED_MODULE_2__["default"],
-    Favorite: _Favorite__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Vote: _Vote__WEBPACK_IMPORTED_MODULE_2__["default"],
+    UserInfo: _UserInfo__WEBPACK_IMPORTED_MODULE_3__["default"],
+    Favorite: _Favorite__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
-      editing: false,
-      originBody: '',
       originTitle: '',
       body: this.question.body,
       body_html: this.question.body_html,
@@ -13222,6 +13175,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     });
   },
   methods: {
+    setOriginTitle: function setOriginTitle() {
+      this.originTitle = this.title;
+    },
+    getOriginTitle: function getOriginTitle() {
+      this.title = this.originTitle;
+    },
     update: function update() {
       var _this2 = this;
 
@@ -13230,14 +13189,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         body: this.body
       }).then(function (_ref) {
         var data = _ref.data;
-        // console.log(data)
-        _this2.body_html = data.body_html;
-        _this2.editing = false;
 
-        _this2.$toast.success(data.message, 'Success', {
-          timeOut: 5000,
-          position: 'topRight'
-        });
+        // console.log(data)
+        _this2.successCase(data);
       })["catch"](function (err) {
         // console.log(err.response)
         _this2.$toast.error(err.response.data.message, 'Error', {
@@ -13248,51 +13202,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       });
     },
-    destroy: function destroy() {
-      var _this3 = this;
-
-      this.$toast.question('Are you sure?', 'Delete', {
-        timeout: 20000,
-        close: false,
-        overlay: true,
-        displayMode: 'once',
-        id: 'question',
-        zindex: 999,
-        position: 'center',
-        buttons: [['<button><b>YES</b></button>', function (instance, toast) {
-          axios["delete"](_this3.endpoint).then(function (_ref2) {
-            var data = _ref2.data;
-
-            if (data.code == 200) {
-              _this3.$toast.success(data.message, 'Success', {
-                timeOut: 3000,
-                position: 'topRight'
-              });
-
-              setTimeout(function () {
-                window.location.href = '/questions';
-              }, 3000);
-            } else {
-              _this3.$toast.error(err.response.data.message, 'Error', {
-                timeOut: 5000,
-                position: 'topRight'
-              });
-            }
-          })["catch"](function (err) {
-            _this3.$toast.error(err.response.data.message, 'Error', {
-              timeOut: 5000,
-              position: 'topRight'
-            });
-          });
-          instance.hide({
-            transitionOut: 'fadeOut'
-          }, toast, 'button');
-        }, true], ['<button>NO</button>', function (instance, toast) {
-          instance.hide({
-            transitionOut: 'fadeOut'
-          }, toast, 'button');
-        }]]
+    destroySuccess: function destroySuccess(data) {
+      this.$toast.success(data.message, 'Success', {
+        timeOut: 3000,
+        position: 'topRight'
       });
+      setTimeout(function () {
+        window.location.href = '/questions';
+      }, 3000);
     }
   }
 });
@@ -49813,11 +49730,7 @@ var render = function() {
                 {
                   staticClass: "btn btn-outline-primary",
                   attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      _vm.editing = false
-                    }
-                  }
+                  on: { click: _vm.cancel }
                 },
                 [_vm._v("Cancel")]
               )
@@ -49832,14 +49745,7 @@ var render = function() {
                   _vm.authorize("modify", _vm.answer)
                     ? _c(
                         "button",
-                        {
-                          staticClass: "btn",
-                          on: {
-                            click: function($event) {
-                              ;(_vm.editing = true), (_vm.body = _vm.body_html)
-                            }
-                          }
-                        },
+                        { staticClass: "btn", on: { click: _vm.edit } },
                         [
                           _c("i", {
                             staticClass: "far fa-edit fa-2x",
@@ -50332,13 +50238,7 @@ var render = function() {
                           {
                             staticClass: "btn btn-outline-primary",
                             attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                ;(_vm.editing = false),
-                                  (_vm.body = _vm.originBody),
-                                  (_vm.title = _vm.originTitle)
-                              }
-                            }
+                            on: { click: _vm.cancel }
                           },
                           [_vm._v("Cancel")]
                         )
@@ -50363,16 +50263,7 @@ var render = function() {
                         _vm.canUpdate
                           ? _c(
                               "button",
-                              {
-                                staticClass: "btn",
-                                on: {
-                                  click: function($event) {
-                                    ;(_vm.editing = true),
-                                      (_vm.originBody = _vm.body),
-                                      (_vm.originTitle = _vm.title)
-                                  }
-                                }
-                              },
+                              { staticClass: "btn", on: { click: _vm.edit } },
                               [
                                 _c("i", {
                                   staticClass: "far fa-edit fa-2x",
@@ -63518,6 +63409,91 @@ _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["config"].autoRep
 _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__["faCaretUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__["faCaretDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__["faStar"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__["faCheck"], _fortawesome_free_regular_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__["faTrashAlt"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_1__["faPlusCircle"]); // Kicks off the process of finding <i> tags and replacing with <svg>
 
 _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["dom"].watch();
+
+/***/ }),
+
+/***/ "./resources/js/mixins/modification.js":
+/*!*********************************************!*\
+  !*** ./resources/js/mixins/modification.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editing: false,
+      originBody: ''
+    };
+  },
+  methods: {
+    edit: function edit() {
+      this.editing = true;
+      console.log(this.body);
+      this.originBody = this.body;
+      this.setOriginTitle();
+    },
+    setOriginTitle: function setOriginTitle() {},
+    cancel: function cancel() {
+      this.editing = false;
+      this.body = this.originBody;
+      this.getOriginTitle();
+    },
+    getOriginTitle: function getOriginTitle() {},
+    successCase: function successCase(data) {
+      this.body_html = data.body_html;
+      this.editing = false;
+      this.$toast.success(data.message, 'Success', {
+        timeOut: 5000,
+        position: 'topRight'
+      });
+    },
+    destroySuccess: function destroySuccess() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    },
+    destroy: function destroy() {
+      var _this = this;
+
+      this.$toast.question('Are you sure?', 'Delete', {
+        timeout: 20000,
+        close: false,
+        overlay: true,
+        displayMode: 'once',
+        id: 'question',
+        zindex: 999,
+        position: 'center',
+        buttons: [['<button><b>YES</b></button>', function (instance, toast) {
+          axios["delete"](_this.endpoint).then(function (_ref) {
+            var data = _ref.data;
+
+            if (data.code == 200) {
+              _this.destroySuccess(data);
+            } else {
+              _this.$toast.error(err.response.data.message, 'Error', {
+                timeOut: 5000,
+                position: 'topRight'
+              });
+            }
+          })["catch"](function (err) {
+            _this.$toast.error(err.response.data.message, 'Error', {
+              timeOut: 5000,
+              position: 'topRight'
+            });
+          });
+          instance.hide({
+            transitionOut: 'fadeOut'
+          }, toast, 'button');
+        }, true], ['<button>NO</button>', function (instance, toast) {
+          instance.hide({
+            transitionOut: 'fadeOut'
+          }, toast, 'button');
+        }]]
+      });
+    }
+  }
+});
 
 /***/ }),
 
