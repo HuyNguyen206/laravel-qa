@@ -12961,6 +12961,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MEditor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MEditor */ "./resources/js/components/MEditor.vue");
 //
 //
 //
@@ -12994,13 +12995,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AnswerInput",
   props: ['question'],
+  components: {
+    MEditor: _MEditor__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       body: ''
     };
+  },
+  computed: {
+    uniqueName: function uniqueName() {
+      return "answer-input-".concat(this.id);
+    }
   },
   methods: {
     addAnswer: function addAnswer() {
@@ -67600,38 +67612,49 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "media" }, [
             _c("div", { staticClass: "media-body" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "answer-body" } }, [
-                  _vm._v("Content")
-                ]),
-                _vm._v(" "),
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.body,
-                      expression: "body"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    name: "body",
-                    id: "answer-body",
-                    rows: "5",
-                    required: ""
-                  },
-                  domProps: { value: _vm.body },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.body = $event.target.value
-                    }
-                  }
-                })
-              ]),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", { attrs: { for: "answer-body" } }, [
+                    _vm._v("Content")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "m-editor",
+                    { attrs: { body: _vm.body, nameIndex: _vm.uniqueName } },
+                    [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.body,
+                            expression: "body"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "body",
+                          id: "answer-body",
+                          rows: "5",
+                          required: ""
+                        },
+                        domProps: { value: _vm.body },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.body = $event.target.value
+                          }
+                        }
+                      })
+                    ]
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
                 _c(

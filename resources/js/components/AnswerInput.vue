@@ -14,7 +14,9 @@
 <!--                            <form action="{{route('questions.answers.store', $question->id)}}" method="post">-->
                                 <div class="form-group">
                                     <label for="answer-body">Content</label>
-                                    <textarea name="body" v-model="body" id="answer-body" rows="5" class="form-control" required></textarea>
+                                    <m-editor :body="body" :nameIndex="uniqueName">
+                                        <textarea name="body" v-model="body" id="answer-body" rows="5" class="form-control" required></textarea>
+                                    </m-editor>
                                 </div>
                                 <div class="form-group">
                                     <button type="button" :disabled="body===''" @click="addAnswer" class="form-control btn btn-outline-primary btn-lg">Submit</button>
@@ -32,13 +34,21 @@
 </template>
 
 <script>
+    import MEditor from "./MEditor";
     export default {
         name: "AnswerInput",
         props:['question'],
+        components:{MEditor},
         data(){
             return {
                 body:'',
             }
+        },
+        computed:{
+            uniqueName()
+            {
+                return `answer-input-${this.id}`
+            },
         },
         methods:{
             addAnswer(){
