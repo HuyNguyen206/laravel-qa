@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 class LoginController extends Controller
 {
     /*
@@ -26,6 +29,18 @@ class LoginController extends Controller
      *
      * @var string
      */
+    function getToken(Request $request)
+    {
+        $request->request->add([
+            'grant_type' => 'password',
+            'client_id' => 2,
+            'client_secret'=> 'T4N4jwuc6cDBnPvFFabPt8MpIq0XM9kiyrYK79Bl',
+            'username' => $request->username,
+            'password' => $request->password
+        ]);
+        $requestToken = Request::create(env('APP_URL').'/oauth/token', 'post');
+        return Route::dispatch($requestToken);
+    }
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
