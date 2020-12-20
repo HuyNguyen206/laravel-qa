@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasMany(Question::class, 'user_id');
     }
 
+    function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
     function getUrlAttribute()
     {
 //        return route('questions.show', $this->id);
@@ -103,6 +108,45 @@ class User extends Authenticatable
             $model->votes_count = $votesUp + $votesDown;
         }
         $model->save();
+    }
+
+    function posts()
+    {
+        $type = request()->get('type');
+        if($type === 'Q')
+        {
+            $posts = $this->questions;
+        }
+        else if ($type === 'A')
+        {
+            $posts = $this->answers;
+        }
+        else
+        {
+            $posts = ($this->questions)->merge($this->answers);
+        }
+        $data = collect();
+        foreach ($posts as $post)
+        {
+            $item['created_at'] =  $post->created_at->format('M d Y');
+            if($post instanceof Question)
+            {
+                $item['type'] = 'Q';
+                $item['title'] = $post->title;
+                $item['accepted'] = (bool) $post->best_answer_id;
+                $item['votes_count'] = $post->votes;
+            }
+            elseif($post instanceof Answer)
+            {
+                $item['type'] = 'A';
+                $item['title'] = $post->question->title;
+                $item['accepted'] =  $post->question->best_answer_id === $post->id;
+                $item['votes_count'] = $post->votes_count;
+            }
+            $data->push($item);
+        }
+        return $data->sortByDesc('votes_count')->values()->all();
+
     }
 
 
