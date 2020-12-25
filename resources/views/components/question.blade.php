@@ -1,4 +1,4 @@
-<div class="media horizon-except-last">
+<div class="media">
     <div class="question-info d-flex flex-column counters mr-5">
         <div class="votes">
             <b>

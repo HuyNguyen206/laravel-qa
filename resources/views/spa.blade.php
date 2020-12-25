@@ -90,11 +90,14 @@
 </div>
 <!-- Scripts -->
 <script>
-    window.Auth = {!! json_encode([
+    window.Auth = @json([
     'isSignIn' => auth()->check(),
     'user'=> auth()->user(),
-    'url' => route('login')
-    ]) !!}
+    ]);
+    window.Urls = @json([
+      'api' => url('/api'),
+     'login' => route('login')]);
+    console.log(12, window.Urls)
 </script>
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
