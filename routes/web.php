@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes();
+Route::view('{spa}', 'spa')->where('spa', '.*');
 Route::get('/','QuestionController@index');
 
-Auth::routes();
+
 
 Route::get('/home', 'QuestionController@index')->name('home');
 Route::resource('questions', 'QuestionController')->except('show');

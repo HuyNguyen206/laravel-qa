@@ -18,11 +18,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('get-token','Auth\LoginController@getToken');
+//Route::post('get-token','Auth\LoginController@getToken');
 //Route::get('questions/{question}','Api\QuestionController@show')->middleware('auth:api');
 Route::get('/questions/{question}-{slug}', 'Api\QuestionDetailController');
 Route::get('questions','Api\QuestionController@index');
 Route::get('questions/{question}/answers','Api\AnswerController@index');
+Route::post('login', 'Api\Auth\LoginController@store');
+Route::post('register', 'Api\Auth\RegisterController');
 Route::middleware('auth:api')->group(function(){
     Route::apiResource('questions', 'Api\QuestionController')->except('index');
     Route::apiResource('questions.answers', 'Api\AnswerController')->except('index');
@@ -32,6 +34,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('answers/{answer}/accept', 'AcceptAnswerController');
     Route::post('questions/{question}/favorite', 'FavoriteController@store');
     Route::delete('questions/{question}/favorite', 'FavoriteController@destroy');
+    Route::delete('logout', 'Api\Auth\LoginController@destroy');
 
     Route::get('posts', 'Api\MyPostsController');
 });
