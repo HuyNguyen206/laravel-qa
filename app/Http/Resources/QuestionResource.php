@@ -25,6 +25,7 @@ class QuestionResource extends JsonResource
             'user' => new UserResource($this->user),
             'date_created' => $this->date_created,
             'body_html' => $this->body_html,
+            'user_id' => $this->user_id,
         ];
     }
 }

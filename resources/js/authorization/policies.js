@@ -19,8 +19,8 @@ export default {
         }
         else
         {
-            console.log('delete', user.id == question.user_id, question.answers_count === 0)
-            console.log('delete', user.id == question.user_id && question.answers_count === 0)
+            // console.log('delete', user.id == question.user_id, question.answers_count === 0)
+            // console.log('delete', user.id == question.user_id && question.answers_count === 0)
 
             return user.id == question.user_id && question.answers_count === 0
         }

@@ -12,23 +12,7 @@
                         </div>
 
                     </div>
-
-                    <div class="card-body" v-cloak>
-                        <div  v-if="questions.length > 0" >
-                            <question-item :question="question" v-for="(question, index) in questions" :key="index"></question-item>
-                        </div>
-                        <div v-else class="alert alert-warning alert-dismissible fade show" role="alert">
-                               <strong>Sorry</strong> There are no question available at the moment
-                        </div>
-<!--                        @include('components._message-feedback')-->
-<!--                        @forelse ($questions as $q)-->
-<!--                        <x-question :question="$q"></x-question>-->
-<!--                        @empty-->
-<!--                        <div class="alert alert-warning alert-dismissible fade show" role="alert">-->
-<!--                            <strong>Sorry</strong> There are no question available at the moment-->
-<!--                        </div>-->
-<!--                        @endforelse-->
-                    </div>
+                <questions></questions>
                 </div>
             </div>
 
@@ -42,28 +26,11 @@
 </template>
 
 <script>
-    import QuestionItem from "../components/QuestionItem";
+    // import Question from "../components/Question";
+    import Questions from "../components/Questions";
     export default {
         name: "QuestionsPage",
-        components:{ QuestionItem },
-        data()
-        {
-            return{
-                questions: []
-            }
-        },
-        created() {
-          this.fetchQuestion()
-        },
-         methods:{
-            fetchQuestion()
-            {
-                axios.get('/questions')
-                    .then(({data}) => {
-                        this.questions = data.data
-                    })
-            }
-         }
+        components:{ Questions },
     }
 </script>
 
