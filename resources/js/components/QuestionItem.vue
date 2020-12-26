@@ -26,7 +26,8 @@
                 </h5>
                 <div class="btn-group">
 <!--                    @can('modify',question)-->
-                    <a v-if="authorize('modify',question)" href="" class="btn btn-outline-info btn-sm d-inline-block"> <i title="Edit question" class="far fa-edit"></i> </a>
+                    <router-link v-if="authorize('modify',question)" class="btn btn-outline-info btn-sm d-inline-block" :to="{name: 'question.edit', params:{ 'id' : question.id}}"><i title="Edit question" class="far fa-edit"></i></router-link>
+<!--                    <a v-if="authorize('modify',question)" href="" class="btn btn-outline-info btn-sm d-inline-block">  </a>-->
 <!--                    @endcan-->
 <!--                    @can('delete', $question)-->
 <!--                    <form action="{{route('questions.destroy', $question->id)}}" method="post">-->

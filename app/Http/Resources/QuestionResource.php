@@ -26,6 +26,7 @@ class QuestionResource extends JsonResource
             'date_created' => $this->date_created,
             'body_html' => $this->body_html,
             'user_id' => $this->user_id,
+            'body' => $this->body
         ];
     }
 }

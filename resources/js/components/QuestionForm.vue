@@ -15,28 +15,50 @@
         </div>
         <div class="form-group">
             <label for="question-body">Explain your question</label>
-            <textarea name="body" v-model="body" id="question-body" rows="5" class="form-control" :class="errorClass('body')" ></textarea>
-            <div v-if="errors['body'][0]" class="invalid-feedback">
-                {{errors['body'][0]}}
-            </div>
+            <m-editor :body="body" nameIndex="question">
+                <textarea name="body" v-model="body" id="question-body" rows="5" class="form-control" :class="errorClass('body')" ></textarea>
+                <div v-if="errors['body'][0]" class="invalid-feedback">
+                    {{errors['body'][0]}}
+                </div>
+            </m-editor>
         </div>
         <button type="submit" class="btn btn-outline-primary btn-lg d-inline-block"> {{buttonText}}</button>
     </form>
 </template>
 
 <script>
+    import EventBus from "../EventBus";
+    import MEditor from "./MEditor";
     export default {
         name: "QuestionForm",
+        components:{MEditor},
+        props:{
+            isCreate:{
+                type:Boolean,
+                default:true
+            }
+        },
         data(){
             return{
-                title:'',
-                body:'',
                 errors:{
                     body:[],
                     title:[]
                 },
-                isCreate: true
+                title: '',
+                body: '',
             }
+        },
+        created() {
+            EventBus.$on('error', (errors) => {
+                console.log('error',errors )
+                this.errors = errors
+            })
+
+            if(!this.isCreate)
+            {
+                this.fetchQuestion()
+            }
+
         },
         computed:{
             buttonText()
@@ -45,27 +67,24 @@
             }
         },
         methods:{
-            handleSubmit(){
-                axios.post('/questions', {title: this.title, body:this.body})
+            fetchQuestion()
+            {
+                axios.get(`/questions/${this.$route.params.id}`)
                 .then(({data}) => {
-                    // console.log(123)
-                    if(data.code === 200)
-                    {
-                        this.$toast.success(data.message, 'Success', { timeOut:3000, position:'topRight'})
-                        setTimeout(() => {
-                           this.$router.push({name:'questions'})
-                        },3000)
-                    }
-                    else
-                    {
-                        this.$toast.error(data.message, 'Error', { timeOut:3000, position:'topRight'})
-                    }
+                    this.title = data.data.title
+                    this.body = data.data.body
+                })
+            },
+            handleSubmit(){
+                if(this.isCreate)
+                {
+                    this.$emit('createQuestion', {title: this.title, body: this.body})
+                }
+                else
+                {
+                    this.$emit('updateQuestion', {title:this.title, body: this.body})
+                }
 
-                })
-                .catch(({response}) => {
-                    this.errors = response.data.errors
-                    // console.log(response)
-                })
             },
             errorClass(data){
                 console.log(5,  this.errors[data])

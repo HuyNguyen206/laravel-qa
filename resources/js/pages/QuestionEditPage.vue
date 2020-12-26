@@ -5,15 +5,15 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h2>Ask Question</h2>
+                            <h2>Edit Question</h2>
                             <router-link :to="{name: 'questions'}" class="btn btn-outline-secondary">Back to all questions</router-link>
-<!--                            <a href="" class="btn btn-outline-secondary"> Back to all questions</a>-->
+                            <!--                            <a href="" class="btn btn-outline-secondary"> Back to all questions</a>-->
                         </div>
 
                     </div>
 
                     <div class="card-body">
-                        <question-form @createQuestion="createQuestion"></question-form>
+                        <question-form @updateQuestion="updateQuestion" :isCreate="false"></question-form>
                     </div>
                 </div>
             </div>
@@ -28,11 +28,14 @@
     import QuestionForm from "../components/QuestionForm";
     import EventBus from "../EventBus";
     export default {
-        name: "QuestionCreate",
-        components: {QuestionForm},
+        name: "QuestionEditPage",
+        components:{QuestionForm },
+        // created() {
+        //     console.log('edit',this.$route.params)
+        // },
         methods:{
-            createQuestion(data){
-                axios.post('/questions', {title: data.title, body:data.body})
+            updateQuestion(data){
+                axios.put(`/questions/${this.$route.params.id}`, {title: data.title, body:data.body})
                     .then(({data}) => {
                         // console.log(123)
                         if(data.code === 200)
