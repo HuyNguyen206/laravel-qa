@@ -7,7 +7,8 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h2>Questions</h2>
 <!--                            @can('create', App\Question::class)-->
-                            <a href="" class="btn btn-outline-secondary"><i class="fas fa-plus-circle" title="Add Question"></i></a>
+                            <router-link class="btn btn-outline-secondary" :to="{name: 'question.create'}"><i class="fas fa-plus-circle" title="Add Question"></i></router-link>
+<!--                            <a href="" class="btn btn-outline-secondary"><i class="fas fa-plus-circle" title="Add Question"></i></a>-->
 <!--                            @endcan-->
                         </div>
 
