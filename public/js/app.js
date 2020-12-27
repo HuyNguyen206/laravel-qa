@@ -13811,6 +13811,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_destroy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/destroy */ "./resources/js/mixins/destroy.js");
 //
 //
 //
@@ -13863,11 +13864,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "QuestionItem",
   props: ['question'],
+  mixins: [_mixins_destroy__WEBPACK_IMPORTED_MODULE_0__["default"]],
   data: function data() {
     return {
       votes: this.question.votes,
@@ -13880,6 +13881,34 @@ __webpack_require__.r(__webpack_exports__);
       title: this.question.title,
       date_created: this.question.date_created
     };
+  },
+  computed: {
+    endpoint: function endpoint() {
+      return "/questions/".concat(this.id);
+    }
+  },
+  methods: {
+    destroySuccess: function destroySuccess(data) {
+      this.$toast.success(data.message, 'Success');
+      this.$emit('deleteQuestion');
+    } // deleteQuestion(){
+    //     axios.delete(`/questions/${this.id}`)
+    //     .then(({data}) => {
+    //         if(data.data.code === 200)
+    //         {
+    //
+    //         }
+    //         else
+    //         {
+    //             this.$toast.error(data.error, 'Success')
+    //         }
+    //     })
+    //     .catch(({response}) => {
+    //         console.log(response)
+    //         this.$toast.error(response.data.message, 'Success')
+    //     })
+    // }
+
   }
 });
 
@@ -13942,8 +13971,11 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         _this.questions = data.data;
         _this.links = data.links;
-        _this.meta = data.meta; // this.endpoint = data.link.next
+        _this.meta = data.meta;
       });
+    },
+    removeQuestion: function removeQuestion(index) {
+      this.questions.splice(index, 1);
     }
   },
   watch: {
@@ -69110,18 +69142,16 @@ var render = function() {
               _vm._v(" "),
               _vm.authorize("deleteQuestion", _vm.question)
                 ? _c(
-                    "button",
+                    "form",
                     {
-                      staticClass:
-                        "btn btn-outline-danger d-inline-block btn-sm",
-                      attrs: { type: "submit" }
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.destroy($event)
+                        }
+                      }
                     },
-                    [
-                      _c("i", {
-                        staticClass: "fas fa-trash-alt",
-                        attrs: { title: "Delete question" }
-                      })
-                    ]
+                    [_vm._m(0)]
                   )
                 : _vm._e()
             ],
@@ -69152,7 +69182,26 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-outline-danger d-inline-block btn-sm",
+        attrs: { type: "submit" }
+      },
+      [
+        _c("i", {
+          staticClass: "fas fa-trash-alt",
+          attrs: { title: "Delete question" }
+        })
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -69182,7 +69231,12 @@ var render = function() {
             _vm._l(_vm.questions, function(question, index) {
               return _c("question-item", {
                 key: question.id,
-                attrs: { question: question }
+                attrs: { question: question },
+                on: {
+                  deleteQuestion: function($event) {
+                    return _vm.removeQuestion(index)
+                  }
+                }
               })
             }),
             1
@@ -85981,64 +86035,17 @@ _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["dom"].watch();
 
 /***/ }),
 
-/***/ "./resources/js/mixins/modification.js":
-/*!*********************************************!*\
-  !*** ./resources/js/mixins/modification.js ***!
-  \*********************************************/
+/***/ "./resources/js/mixins/destroy.js":
+/*!****************************************!*\
+  !*** ./resources/js/mixins/destroy.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var markdown_it__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! markdown-it */ "./node_modules/markdown-it/index.js");
-/* harmony import */ var markdown_it__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(markdown_it__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var markdown_it_prism__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! markdown-it-prism */ "./node_modules/markdown-it-prism/build/index.js");
-/* harmony import */ var markdown_it_prism__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(markdown_it_prism__WEBPACK_IMPORTED_MODULE_1__);
- // import Prism from 'prismjs'
-// import AutoSize from "autosize";
-
-
-var markdown = new markdown_it__WEBPACK_IMPORTED_MODULE_0___default.a();
-markdown.use(markdown_it_prism__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      editing: false,
-      originBody: '',
-      markdown: new markdown_it__WEBPACK_IMPORTED_MODULE_0___default.a()
-    };
-  },
   methods: {
-    renderDataMD: function renderDataMD(data) {
-      return markdown.render(data);
-    },
-    edit: function edit() {
-      this.editing = true;
-      console.log(this.body);
-      this.originBody = this.body;
-      this.setOriginTitle();
-    },
-    setOriginTitle: function setOriginTitle() {},
-    cancel: function cancel() {
-      this.editing = false;
-      this.body = this.originBody; // console.log(this.$refs.body_html)
-
-      console.log('cancel'); // Prism.highlightAllUnder(document.getElementById('bodyHtml'))
-
-      this.body_html = this.renderDataMD(this.body);
-      this.getOriginTitle();
-    },
-    getOriginTitle: function getOriginTitle() {},
-    successCase: function successCase(data) {
-      this.body_html = this.renderDataMD(this.body); // Prism.highlightAllUnder(this.$refs.body_html)
-      // this.body_html = data.body_html
-
-      this.editing = false;
-      this.$toast.success(data.message, 'Success', {
-        timeOut: 5000,
-        position: 'topRight'
-      });
-    },
     destroySuccess: function destroySuccess() {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     },
@@ -86079,6 +86086,72 @@ markdown.use(markdown_it_prism__WEBPACK_IMPORTED_MODULE_1___default.a);
             transitionOut: 'fadeOut'
           }, toast, 'button');
         }]]
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/mixins/modification.js":
+/*!*********************************************!*\
+  !*** ./resources/js/mixins/modification.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var markdown_it__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! markdown-it */ "./node_modules/markdown-it/index.js");
+/* harmony import */ var markdown_it__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(markdown_it__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _destroy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./destroy */ "./resources/js/mixins/destroy.js");
+/* harmony import */ var markdown_it_prism__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! markdown-it-prism */ "./node_modules/markdown-it-prism/build/index.js");
+/* harmony import */ var markdown_it_prism__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(markdown_it_prism__WEBPACK_IMPORTED_MODULE_2__);
+
+ // import Prism from 'prismjs'
+// import AutoSize from "autosize";
+
+
+var markdown = new markdown_it__WEBPACK_IMPORTED_MODULE_0___default.a();
+markdown.use(markdown_it_prism__WEBPACK_IMPORTED_MODULE_2___default.a);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_destroy__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  data: function data() {
+    return {
+      editing: false,
+      originBody: '',
+      markdown: new markdown_it__WEBPACK_IMPORTED_MODULE_0___default.a()
+    };
+  },
+  methods: {
+    renderDataMD: function renderDataMD(data) {
+      return markdown.render(data);
+    },
+    edit: function edit() {
+      this.editing = true;
+      console.log(this.body);
+      this.originBody = this.body;
+      this.setOriginTitle();
+    },
+    setOriginTitle: function setOriginTitle() {},
+    cancel: function cancel() {
+      this.editing = false;
+      this.body = this.originBody; // console.log(this.$refs.body_html)
+
+      console.log('cancel'); // Prism.highlightAllUnder(document.getElementById('bodyHtml'))
+
+      this.body_html = this.renderDataMD(this.body);
+      this.getOriginTitle();
+    },
+    getOriginTitle: function getOriginTitle() {},
+    successCase: function successCase(data) {
+      this.body_html = this.renderDataMD(this.body); // Prism.highlightAllUnder(this.$refs.body_html)
+      // this.body_html = data.body_html
+
+      this.editing = false;
+      this.$toast.success(data.message, 'Success', {
+        timeOut: 5000,
+        position: 'topRight'
       });
     }
   }

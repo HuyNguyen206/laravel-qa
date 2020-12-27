@@ -30,11 +30,9 @@
 <!--                    <a v-if="authorize('modify',question)" href="" class="btn btn-outline-info btn-sm d-inline-block">  </a>-->
 <!--                    @endcan-->
 <!--                    @can('delete', $question)-->
-<!--                    <form action="{{route('questions.destroy', $question->id)}}" method="post">-->
-<!--                        @csrf-->
-<!--                        @method('delete')-->
-                        <button v-if="authorize('deleteQuestion',question)" type="submit" class="btn btn-outline-danger d-inline-block btn-sm" ><i title="Delete question" class="fas fa-trash-alt"></i></button>
-<!--                    </form>-->
+                    <form v-if="authorize('deleteQuestion',question)" @submit.prevent="destroy">
+                        <button type="submit" class="btn btn-outline-danger d-inline-block btn-sm" ><i title="Delete question" class="fas fa-trash-alt"></i></button>
+                    </form>
 <!--                    @endcan-->
                 </div>
 
@@ -53,9 +51,11 @@
 </template>
 
 <script>
+    import destroy from '../mixins/destroy';
     export default {
         name: "QuestionItem",
         props:['question'],
+        mixins:[destroy],
         data(){
             return{
                 votes: this.question.votes,
@@ -66,8 +66,36 @@
                 user: this.question.user,
                 body_html:this.question.body_html,
                 title:this.question.title,
-                date_created: this.question.date_created
+                date_created: this.question.date_created,
             }
+        },
+        computed:{
+          endpoint(){
+              return `/questions/${this.id}`
+          }
+        },
+        methods:{
+            destroySuccess(data){
+                this.$toast.success(data.message, 'Success');
+                this.$emit('deleteQuestion')
+            },
+            // deleteQuestion(){
+            //     axios.delete(`/questions/${this.id}`)
+            //     .then(({data}) => {
+            //         if(data.data.code === 200)
+            //         {
+            //
+            //         }
+            //         else
+            //         {
+            //             this.$toast.error(data.error, 'Success')
+            //         }
+            //     })
+            //     .catch(({response}) => {
+            //         console.log(response)
+            //         this.$toast.error(response.data.message, 'Success')
+            //     })
+            // }
         }
     }
 </script>

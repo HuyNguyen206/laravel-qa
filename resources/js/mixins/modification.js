@@ -1,10 +1,12 @@
 import MarkDownIt from 'markdown-it'
+import destroy from "./destroy";
 // import Prism from 'prismjs'
 // import AutoSize from "autosize";
 import prism from 'markdown-it-prism'
 const markdown = new MarkDownIt()
 markdown.use(prism)
 export default {
+    mixins: [destroy],
     data(){
         return {
             editing:false,
@@ -48,49 +50,5 @@ export default {
             this.editing = false;
             this.$toast.success(data.message, 'Success', { timeOut:5000, position:'topRight'})
         },
-        destroySuccess(data = null)
-        {
-
-        },
-        destroy()
-        {
-            this.$toast.question('Are you sure?', 'Delete', {
-                timeout: 20000,
-                close: false,
-                overlay: true,
-                displayMode: 'once',
-                id: 'question',
-                zindex: 999,
-                position: 'center',
-                buttons: [
-                    ['<button><b>YES</b></button>', (instance, toast) => {
-                        axios.delete(this.endpoint)
-                            .then(({data}) => {
-                                if(data.code == 200)
-                                {
-                                    this.destroySuccess(data)
-                                }
-                                else
-                                {
-                                    this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
-                                }
-                            })
-                            .catch(err => {
-                                this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
-                            })
-                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-
-                    }, true],
-                    ['<button>NO</button>', function (instance, toast) {
-
-                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-
-                    }],
-                ],
-            });
-
-
-
-        }
     }
 }

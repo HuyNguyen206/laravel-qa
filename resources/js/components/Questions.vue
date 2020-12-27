@@ -2,7 +2,7 @@
     <div>
         <div class="card-body" v-cloak>
             <div  v-if="questions.length > 0" >
-                <question-item :question="question" v-for="(question, index) in questions" :key="question.id"></question-item>
+                <question-item :question="question" v-for="(question, index) in questions" :key="question.id" @deleteQuestion="removeQuestion(index)"></question-item>
             </div>
             <div v-else class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Sorry</strong> There are no question available at the moment
@@ -41,8 +41,10 @@
                         this.questions = data.data
                         this.links = data.links
                         this.meta = data.meta
-                        // this.endpoint = data.link.next
                     })
+            },
+            removeQuestion(index){
+                this.questions.splice(index, 1)
             }
         },
         watch:{

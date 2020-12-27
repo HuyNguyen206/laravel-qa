@@ -102,7 +102,7 @@ class QuestionController extends Controller
         }
         catch (\Throwable $ex)
         {
-                return response()->json(['code' => 200, 'message' => $ex->getMessage()], 200);
+                return response()->json(['code' => 500, 'message' => $ex->getMessage()], 500);
 
         }
     }
