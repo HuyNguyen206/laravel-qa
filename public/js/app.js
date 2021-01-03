@@ -13159,8 +13159,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var _this$answers;
 
         var data = _ref.data;
+        console.log(123, data);
 
-        // console.log(data)
         (_this$answers = _this.answers).push.apply(_this$answers, _toConsumableArray(data.data.filter(function (answer) {
           var index = _this.newAnswerId.findIndex(function (id) {
             return answer.id === id;
@@ -13169,8 +13169,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           return index === -1;
         })));
 
-        _this.hasMoreAnswer = data.next_page_url != null && _this.answers.length < _this.count;
-        _this.url = data.next_page_url;
+        _this.hasMoreAnswer = data.links.next != null && _this.answers.length < _this.count;
+        _this.url = data.links.next;
       })["catch"](function (err) {
         // console.log(123, err)
         _this.$toast.error(err.response.data.message, 'Error', {
@@ -13879,7 +13879,8 @@ __webpack_require__.r(__webpack_exports__);
       user: this.question.user,
       body_html: this.question.body_html,
       title: this.question.title,
-      date_created: this.question.date_created
+      date_created: this.question.date_created,
+      slug: this.question.slug
     };
   },
   computed: {
@@ -14377,11 +14378,24 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "QuestionPage",
-  props: ['question'],
+  props: ['slug'],
+  data: function data() {
+    return {
+      question: {}
+    };
+  },
   components: {
     Question: _components_Question__WEBPACK_IMPORTED_MODULE_0__["default"],
     Answer: _components_Answer__WEBPACK_IMPORTED_MODULE_1__["default"],
     Answers: _components_Answers__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("/questions/".concat(this.slug)).then(function (_ref) {
+      var data = _ref.data;
+      _this.question = data.data;
+    });
   }
 });
 
@@ -68672,7 +68686,27 @@ var render = function() {
   return _c("div", { staticClass: "row justify-content-center" }, [
     _c("div", { staticClass: "col-md-12" }, [
       _c("div", { staticClass: "card" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "card-header" }, [
+          _c(
+            "div",
+            {
+              staticClass: "d-flex align-items-center justify-content-between"
+            },
+            [
+              _c("h2", [_vm._v("Question detail")]),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "btn btn-outline-secondary",
+                  attrs: { to: { name: "questions" } }
+                },
+                [_vm._v(" Back to all questions")]
+              )
+            ],
+            1
+          )
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -68879,31 +68913,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c(
-        "div",
-        { staticClass: "d-flex align-items-center justify-content-between" },
-        [
-          _c("h2", [_vm._v("Question detail")]),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-outline-secondary",
-              attrs: { href: "/questions" }
-            },
-            [_vm._v(" Back to all questions")]
-          )
-        ]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -69111,9 +69121,21 @@ var render = function() {
             "question-title d-flex align-items-center justify-content-between"
         },
         [
-          _c("h5", [
-            _c("a", { attrs: { href: "" } }, [_vm._v(_vm._s(_vm.title))])
-          ]),
+          _c(
+            "h5",
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: { name: "question.show", params: { slug: _vm.slug } }
+                  }
+                },
+                [_vm._v(" " + _vm._s(_vm.title))]
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
             "div",
@@ -69588,10 +69610,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "container" },
     [
-      _c("question", { attrs: { question: _vm.question } }),
+      _vm.question.id
+        ? _c("question", { attrs: { question: _vm.question } })
+        : _vm._e(),
       _vm._v(" "),
-      _c("answers", { attrs: { question: _vm.question } })
+      _vm.question.id
+        ? _c("answers", { attrs: { question: _vm.question } })
+        : _vm._e()
     ],
     1
   )
@@ -85749,6 +85776,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuestionItem_vue_vue_type_template_id_6f2ef0f8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionItem.vue?vue&type=template&id=6f2ef0f8&scoped=true& */ "./resources/js/components/QuestionItem.vue?vue&type=template&id=6f2ef0f8&scoped=true&");
 /* harmony import */ var _QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./QuestionItem.vue?vue&type=script&lang=js& */ "./resources/js/components/QuestionItem.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _QuestionItem_vue_vue_type_custom_index_0_blockType_h3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./QuestionItem.vue?vue&type=custom&index=0&blockType=h3 */ "./resources/js/components/QuestionItem.vue?vue&type=custom&index=0&blockType=h3");
+/* harmony import */ var _QuestionItem_vue_vue_type_custom_index_0_blockType_h3__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_QuestionItem_vue_vue_type_custom_index_0_blockType_h3__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -85767,10 +85796,25 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   
 )
 
+/* custom blocks */
+
+if (typeof _QuestionItem_vue_vue_type_custom_index_0_blockType_h3__WEBPACK_IMPORTED_MODULE_3___default.a === 'function') _QuestionItem_vue_vue_type_custom_index_0_blockType_h3__WEBPACK_IMPORTED_MODULE_3___default()(component)
+
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/QuestionItem.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/QuestionItem.vue?vue&type=custom&index=0&blockType=h3":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/QuestionItem.vue?vue&type=custom&index=0&blockType=h3 ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 
@@ -86640,7 +86684,8 @@ var routes = [{
 }, {
   path: '/questions/:slug',
   component: _pages_QuestionPage__WEBPACK_IMPORTED_MODULE_1__["default"],
-  name: 'question.show'
+  name: 'question.show',
+  props: true
 }, {
   path: '/question-create',
   component: _pages_QuestionCreatePage__WEBPACK_IMPORTED_MODULE_4__["default"],

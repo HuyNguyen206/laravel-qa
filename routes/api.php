@@ -20,13 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //Route::post('get-token','Auth\LoginController@getToken');
 //Route::get('questions/{question}','Api\QuestionController@show')->middleware('auth:api');
-Route::get('/questions/{question}-{slug}', 'Api\QuestionDetailController');
+//Route::get('/questions/{question}-{slug}', 'Api\QuestionDetailController');
 Route::get('questions','Api\QuestionController@index');
 Route::get('questions/{question}/answers','Api\AnswerController@index');
 Route::post('login', 'Api\Auth\LoginController@store');
 Route::post('register', 'Api\Auth\RegisterController');
+Route::get('questions/{slug}','Api\QuestionController@show');
 Route::middleware('auth:api')->group(function(){
-    Route::apiResource('questions', 'Api\QuestionController')->except('index');
+    Route::apiResource('questions', 'Api\QuestionController')->except('index', 'show');
     Route::apiResource('questions.answers', 'Api\AnswerController')->except('index');
     Route::post('questions/{question}/vote', 'Api\VoteQuestionController');
     Route::post('answers/{answer}/vote', 'Api\VoteAnswerController');

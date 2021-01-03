@@ -22,7 +22,7 @@
         <div class="question media-body">
             <div class="question-title d-flex align-items-center justify-content-between">
                 <h5>
-                    <a href="">{{title}}</a>
+                    <router-link :to="{name: 'question.show', params:{slug} }"> {{title}}</router-link>
                 </h5>
                 <div class="btn-group">
 <!--                    @can('modify',question)-->
@@ -49,7 +49,7 @@
     </div>
 
 </template>
-
+<h3></h3>
 <script>
     import destroy from '../mixins/destroy';
     export default {
@@ -67,6 +67,7 @@
                 body_html:this.question.body_html,
                 title:this.question.title,
                 date_created: this.question.date_created,
+                slug:  this.question.slug
             }
         },
         computed:{

@@ -18,7 +18,8 @@ const routes = [
     {
         path:'/questions/:slug',
         component:QuestionPage,
-        name:'question.show'
+        name:'question.show',
+        props:true
     },
     {
         path:'/question-create',

@@ -58,7 +58,7 @@
                 console.log('new answer', answer)
                 this.answers.push(answer)
                 this.newAnswerId.push(answer.id)
-                this.count++
+                this.count++;
                 EventBus.$emit('sync-answer-count',  this.count)
 
             },
@@ -79,15 +79,15 @@
             fetchAnswers() {
                 axios.get(this.url)
                     .then(({data}) => {
-                        // console.log(data)
+                        console.log(123,data)
                         this.answers.push(...(data.data.filter(answer => {
                             let index = this.newAnswerId.findIndex(id =>{
                                 return answer.id === id
                             })
                             return index === -1
                         })))
-                        this.hasMoreAnswer = (data.next_page_url != null && this.answers.length < this.count)
-                        this.url = data.next_page_url
+                        this.hasMoreAnswer = (data.links.next != null && this.answers.length < this.count)
+                        this.url = data.links.next
                     })
                     .catch(err => {
                         // console.log(123, err)

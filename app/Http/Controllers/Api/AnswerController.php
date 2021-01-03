@@ -13,7 +13,8 @@ class AnswerController extends Controller
 
     public function index(Question $question)
     {
-        $answers = $question->answers()->with('user')->simplePaginate(3);
+//        dd(123);
+        $answers = $question->answers()->with('question')->simplePaginate(3);
         return AnswerResource::collection($answers);
     }
     /**
