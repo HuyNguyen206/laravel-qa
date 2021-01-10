@@ -83,7 +83,10 @@
     </nav>
 
     <main class="py-4">
-        <router-view></router-view>
+        <transition name="fade">
+            <router-view></router-view>
+        </transition>
+
         {{--        Content goes here--}}
         {{--        @yield('content')--}}
     </main>

@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="card-body" v-cloak>
-            <div  v-if="questions.length > 0" >
+            <spinner v-if="$root.loading"></spinner>
+            <div  v-else-if="questions.length > 0" >
                 <question-item :question="question" v-for="(question, index) in questions" :key="question.id" @deleteQuestion="removeQuestion(index)"></question-item>
             </div>
             <div v-else class="alert alert-warning alert-dismissible fade show" role="alert">

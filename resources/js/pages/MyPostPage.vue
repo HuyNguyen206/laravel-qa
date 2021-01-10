@@ -17,7 +17,8 @@
                        </ul>
                    </div>
                    <div class="card-body" v-cloak>
-                       <ul class="list-group list-group-flush" v-if="listItems.length > 0" >
+                       <spinner v-if="$root.loading"></spinner>
+                       <ul class="list-group list-group-flush" v-else-if="listItems.length > 0" >
                            <object-item v-for="(item, index) in listItems" :object="item" :key="index"></object-item>
                        </ul>
                        <div v-else class="alert alert-warning">
@@ -42,7 +43,7 @@
         components: { ObjectItem },
         data(){
             return{
-                listItems:[]
+                listItems:[],
             }
         },
         created() {
@@ -51,6 +52,7 @@
         methods:{
             fetch()
             {
+                this.loading = true
                 axios.get('/posts', {params: this.$route.query})
                     .then(({data}) => {
                         this.listItems = data;
