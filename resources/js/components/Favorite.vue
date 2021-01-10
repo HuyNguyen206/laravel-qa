@@ -38,7 +38,7 @@
             return {
                 count: this.question.favorite_counts,
                 statusFavorite: this.question.status_favorite,
-                endPoint: `/question/${this.question.id}/favorite`
+                endPoint: `/questions/${this.question.id}/favorite`
             }
          },
         methods:{

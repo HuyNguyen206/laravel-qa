@@ -26,18 +26,18 @@ Route::get('questions/{question}/answers','Api\AnswerController@index');
 Route::post('login', 'Api\Auth\LoginController@store');
 Route::post('register', 'Api\Auth\RegisterController');
 Route::get('questions/{slug}','Api\QuestionController@show');
-Route::middleware('auth:api')->group(function(){
-    Route::apiResource('questions', 'Api\QuestionController')->except('index', 'show');
-    Route::apiResource('questions.answers', 'Api\AnswerController')->except('index');
-    Route::post('questions/{question}/vote', 'Api\VoteQuestionController');
-    Route::post('answers/{answer}/vote', 'Api\VoteAnswerController');
+Route::middleware('auth:api')->namespace('Api')->group(function(){
+    Route::apiResource('questions', 'QuestionController')->except('index', 'show');
+    Route::apiResource('questions.answers', 'AnswerController')->except('index');
+    Route::post('questions/{question}/vote', 'VoteQuestionController');
+    Route::post('answers/{answer}/vote', 'VoteAnswerController');
 
     Route::post('answers/{answer}/accept', 'AcceptAnswerController');
     Route::post('questions/{question}/favorite', 'FavoriteController@store');
     Route::delete('questions/{question}/favorite', 'FavoriteController@destroy');
-    Route::delete('logout', 'Api\Auth\LoginController@destroy');
+    Route::delete('logout', 'Auth\LoginController@destroy');
 
-    Route::get('posts', 'Api\MyPostsController');
+    Route::get('posts', 'MyPostsController');
 });
 
 

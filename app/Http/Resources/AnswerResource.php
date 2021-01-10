@@ -25,7 +25,8 @@ class AnswerResource extends JsonResource
             'vote_down_status' => $this->vote_down_status,
             'vote_up_status' => $this->vote_up_status,
             'is_best' => $this->is_best,
-            'question' => $this->question
+            'question' => $this->question,
+            'user_id' => $this->user_id
         ];
     }
 }

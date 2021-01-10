@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Auth::routes();
+Route::get('test', 'TestController@test');
 Route::view('{spa}', 'spa')->where('spa', '.*');
 Route::get('/','QuestionController@index');
 

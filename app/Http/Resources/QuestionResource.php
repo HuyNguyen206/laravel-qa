@@ -27,7 +27,11 @@ class QuestionResource extends JsonResource
             'body_html' => $this->body_html,
             'user_id' => $this->user_id,
             'body' => $this->body,
-            'slug' => $this->slug
+            'slug' => $this->slug,
+            'favorite_counts' => $this->favorite_counts,
+            'status_favorite' => $this->status_favorite,
+            'vote_up_status'=> $this->vote_up_status,
+            'vote_down_status' => $this->vote_down_status,
         ];
     }
 }

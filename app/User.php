@@ -112,7 +112,7 @@ class User extends Authenticatable
 
     function posts()
     {
-        $type = request()->get('type');
+        $type = request()->get('type','all');
         if($type === 'Q')
         {
             $posts = $this->questions;
@@ -123,7 +123,7 @@ class User extends Authenticatable
         }
         else
         {
-            $posts = ($this->questions)->merge($this->answers);
+            $posts = ($this->questions)->toBase()->merge($this->answers);
         }
         $data = collect();
         foreach ($posts as $post)
@@ -139,7 +139,7 @@ class User extends Authenticatable
             elseif($post instanceof Answer)
             {
                 $item['type'] = 'A';
-                $item['title'] = $post->question->title;
+                $item['title'] = $post->body;
                 $item['accepted'] =  $post->question->best_answer_id === $post->id;
                 $item['votes_count'] = $post->votes_count;
             }

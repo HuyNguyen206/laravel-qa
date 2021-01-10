@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="vote-info d-flex flex-column align-items-center mr-4">
-                            <vote type="question" vote-up-title="This question is useful" vote-down-title="This question is not useful" lower-model="question" upper-model="Question" :model="question"></vote>
+                            <vote type="questions" vote-up-title="This question is useful" vote-down-title="This question is not useful" lower-model="question" upper-model="Question" :model="question"></vote>
                             <favorite :question="question"></favorite>
                         </div>
                         <div class="media-body">
@@ -129,7 +129,7 @@
             destroySuccess(data){
                 this.$toast.success(data.message, 'Success', { timeOut:3000, position:'topRight'})
                 setTimeout(() => {
-                    window.location.href='/questions'
+                    this.$router.push({name:'questions'})
                 },3000)
             },
         },

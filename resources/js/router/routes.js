@@ -41,9 +41,9 @@ const routes = [
         path:'/my-post',
         component:MyPostPage,
         name:'post',
-        meta:{
-            requireAuth:true
-        }
+        // meta:{
+        //     requireAuth:true
+        // }
     },
     {
         path:'*',

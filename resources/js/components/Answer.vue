@@ -1,7 +1,7 @@
 <template>
     <div class="media horizon-except-last">
         <div class="vote-info d-flex flex-column align-items-center mr-4">
-            <vote type="answer" vote-up-title="This answer is useful" vote-down-title="This answer is not useful" lower-model="answer" upper-model="Answer" :model="answer"></vote>
+            <vote type="answers" vote-up-title="This answer is useful" vote-down-title="This answer is not useful" lower-model="answer" upper-model="Answer" :model="answer"></vote>
             <best-answer :answer="answer"></best-answer>
         </div>
         <div class="media-body">
@@ -57,7 +57,7 @@
             return{
                 body:this.answer.body,
                 body_html:this.answer.body_html,
-                questionId: this.answer.question_id,
+                questionId: this.answer.question.id,
                 id: this.answer.id
             }
         },

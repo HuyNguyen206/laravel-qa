@@ -44,7 +44,7 @@
         methods:{
             markBestAnswer()
             {
-                axios.post(`/answer/${this.id}/accept`)
+                axios.post(`/answers/${this.id}/accept`)
                 .then(({data}) => {
                     if(data.code == 200)
                     {
