@@ -77,18 +77,18 @@ class Question extends Model
 
     function isFavorite()
     {
-        return auth()->check() ?  \Auth::user()->favoriteQuestions->contains('id', $this->id) : false;
+        return auth('api')->check() ?  \Auth::guard('api')->user()->favoriteQuestions->contains('id', $this->id) : false;
     }
 
     function isVoteUp()
     {
-        return auth()->check() ? auth()->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', 1)->count() > 0 : false;
+        return auth('api')->check() ? auth('api')->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', 1)->count() > 0 : false;
     }
 
 
     function isVoteDown()
     {
-        return auth()->check() ? auth()->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
+        return auth('api')->check() ? auth('api')->user()->VoteQuestions()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
     }
 
 //    function getIsVoteUpAttribute()

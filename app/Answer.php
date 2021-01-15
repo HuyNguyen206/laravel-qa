@@ -62,13 +62,13 @@ class Answer extends Model
 
     function isVoteUp()
     {
-        return auth()->check() ? auth()->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', 1)->count() > 0 : false;
+        return auth('api')->check() ? auth('api')->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', 1)->count() > 0 : false;
     }
 
 
     function isVoteDown()
     {
-        return auth()->check() ? auth()->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
+        return auth('api')->check() ? auth('api')->user()->VoteAnswers()->wherePivot('votable_id', $this->id)->wherePivot('vote', -1)->count() > 0 : false;
     }
 
 //    function getIsVoteUpAttribute()
