@@ -79,7 +79,13 @@
     </div>
     <!-- Scripts -->
     <script>
-        window.Auth = {!! json_encode(['isSignIn' => auth()->check(), 'user'=> auth()->user()]) !!}
+        window.Auth = @json([
+    'isSignIn' => auth()->check(),
+    'user'=> auth()->user(),
+    ]);
+        window.Urls = @json([
+      'api' => url('/api'),
+     'login' => route('login')]);
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

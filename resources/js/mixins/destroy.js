@@ -6,6 +6,7 @@ export default {
         },
         destroy()
         {
+            // this.$root.disableInterceptor();
             this.$toast.question('Are you sure?', 'Delete', {
                 timeout: 20000,
                 close: false,
@@ -28,7 +29,8 @@ export default {
                                 }
                             })
                             .catch(err => {
-                                this.$toast.error(err.response.data.message, 'Error', { timeOut:5000, position:'topRight'})
+                                console.log(err)
+                                this.$toast.error(err, 'Error', { timeOut:5000, position:'topRight'})
                             })
                         instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 

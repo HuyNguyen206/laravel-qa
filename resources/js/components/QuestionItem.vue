@@ -52,6 +52,7 @@
 <h3></h3>
 <script>
     import destroy from '../mixins/destroy';
+    import EventBus from "../EventBus";
     export default {
         name: "QuestionItem",
         props:['question'],
@@ -78,7 +79,7 @@
         methods:{
             destroySuccess(data){
                 this.$toast.success(data.message, 'Success');
-                this.$emit('deleteQuestion')
+                EventBus.$emit('deleteQuestion', this.id)
             },
             // deleteQuestion(){
             //     axios.delete(`/questions/${this.id}`)

@@ -13849,6 +13849,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_destroy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/destroy */ "./resources/js/mixins/destroy.js");
+/* harmony import */ var _EventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../EventBus */ "./resources/js/EventBus.js");
 //
 //
 //
@@ -13902,6 +13903,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "QuestionItem",
   props: ['question'],
@@ -13928,7 +13930,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     destroySuccess: function destroySuccess(data) {
       this.$toast.success(data.message, 'Success');
-      this.$emit('deleteQuestion');
+      _EventBus__WEBPACK_IMPORTED_MODULE_1__["default"].$emit('deleteQuestion', this.id);
     } // deleteQuestion(){
     //     axios.delete(`/questions/${this.id}`)
     //     .then(({data}) => {
@@ -13963,6 +13965,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuestionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionItem */ "./resources/js/components/QuestionItem.vue");
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue */ "./resources/js/components/Pagination.vue");
+/* harmony import */ var _EventBus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../EventBus */ "./resources/js/EventBus.js");
 //
 //
 //
@@ -13981,6 +13984,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -13998,23 +14002,34 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    var _this = this;
+
     this.fetchQuestion();
+    _EventBus__WEBPACK_IMPORTED_MODULE_2__["default"].$on('deleteQuestion', function (id) {
+      var index = _this.questions.findIndex(function (question) {
+        return question.id === id;
+      });
+
+      _this.questions.splice(index, 1);
+    });
   },
   methods: {
     fetchQuestion: function fetchQuestion() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get(this.endpoint, {
         params: this.$route.query
       }).then(function (_ref) {
         var data = _ref.data;
-        _this.questions = data.data;
-        _this.links = data.links;
-        _this.meta = data.meta;
+        _this2.questions = data.data;
+        _this2.links = data.links;
+        _this2.meta = data.meta;
       });
     },
     removeQuestion: function removeQuestion(index) {
+      console.log('huy', this.questions, index);
       this.questions.splice(index, 1);
+      console.log(this.questions);
     }
   },
   watch: {
@@ -85395,45 +85410,44 @@ Vue.component('spinner', __webpack_require__(/*! ./components/Spinner */ "./reso
 var app = new Vue({
   el: '#app',
   data: {
-    loading: false
+    loading: false,
+    interceptor: null
   },
   router: _router_index__WEBPACK_IMPORTED_MODULE_3__["default"],
   created: function created() {
-    var _this = this;
+    this.enableInterceptor();
+  },
+  methods: {
+    enableInterceptor: function enableInterceptor() {
+      var _this = this;
 
-    // Add a request interceptor
-    axios.interceptors.request.use(function (config) {
-      // Do something before request is sent
-      _this.loading = true;
-      return config;
-    }, function (error) {
-      // Do something with request error
-      _this.loading = false;
-      return Promise.reject(error);
-    }); // Add a response interceptor
+      // Add a request interceptor
+      this.interceptor = axios.interceptors.request.use(function (config) {
+        // Do something before request is sent
+        _this.loading = true;
+        return config;
+      }, function (error) {
+        // Do something with request error
+        _this.loading = false;
+        return Promise.reject(error);
+      }); // Add a response interceptor
 
-    axios.interceptors.response.use(function (response) {
-      // Any status code that lie within the range of 2xx cause this function to trigger
-      // Do something with response data
-      _this.loading = false;
-      return response;
-    }, function (error) {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
-      _this.loading = false;
-      return Promise.reject(error);
-    });
-  } // methods:{
-  //     handleUpdateBestAnswer(data)
-  //     {
-  //         console.log(data)
-  //         this.bestAnswerId = data.id
-  //     },
-  //     data:{
-  //             bestAnswerId: 4
-  //     }
-  // }
-
+      axios.interceptors.response.use(function (response) {
+        // Any status code that lie within the range of 2xx cause this function to trigger
+        // Do something with response data
+        _this.loading = false;
+        return response;
+      }, function (error) {
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        _this.loading = false;
+        return Promise.reject(error);
+      });
+    },
+    disableInterceptor: function disableInterceptor() {
+      axios.interceptors.request.eject(this.interceptor);
+    }
+  }
 });
 
 /***/ }),
@@ -86672,6 +86686,7 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       var _this = this;
 
+      // this.$root.disableInterceptor();
       this.$toast.question('Are you sure?', 'Delete', {
         timeout: 20000,
         close: false,
@@ -86693,7 +86708,9 @@ __webpack_require__.r(__webpack_exports__);
               });
             }
           })["catch"](function (err) {
-            _this.$toast.error(err.response.data.message, 'Error', {
+            console.log(err);
+
+            _this.$toast.error(err, 'Error', {
               timeOut: 5000,
               position: 'topRight'
             });

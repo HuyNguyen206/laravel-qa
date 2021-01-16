@@ -19,6 +19,7 @@
 <script>
     import QuestionItem from "./QuestionItem";
     import Pagination from './Pagination.vue';
+    import EventBus from "../EventBus";
     export default {
         name: "Questions",
         components:{QuestionItem, Pagination},
@@ -32,7 +33,13 @@
             }
         },
         created() {
-            this.fetchQuestion()
+            this.fetchQuestion();
+            EventBus.$on('deleteQuestion', (id) => {
+                let index = this.questions.findIndex((question) => {
+                    return question.id === id
+                })
+                this.questions.splice(index, 1)
+            })
         },
         methods:{
             fetchQuestion()
@@ -45,7 +52,9 @@
                     })
             },
             removeQuestion(index){
+                console.log('huy',this.questions,index)
                 this.questions.splice(index, 1)
+                console.log(this.questions)
             }
         },
         watch:{
